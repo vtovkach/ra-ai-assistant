@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 
-class UnprocessedChat:
-    def __init__(self, filepath: str, questions: list[str]):
+
+class Chat:
+    def __init__(self, filepath: str, questions: list[str], isProcessed: bool):
         self.filepath: str = filepath
+        self.isProcessed = isProcessed
         self.questions: list[str] = questions
-        self.notes: str = ""
+        self.answers: list[str] = []
+        self.notes: list[str] = []
         self.name: str = ""
         self.date: str = ""
         self.frequency: str = ""
@@ -14,46 +17,44 @@ class UnprocessedChat:
         self.retrieveData()
 
     def retrieveData(self):
-        # Open the file and read the notes 
-        with open(self.filepath, "r") as f:
-            notes = ""
-            for i, line in enumerate(f):
-                if i == 0:
-                    self.name = line.strip()
-                elif i == 1:
-                    self.date = line.strip()
-                elif i == 2:
-                    self.frequency = line.strip()
-                elif i == 3:
-                    self.resources = line.split(", ")
-                elif i == 4:
-                    self.additionalResources = line.strip()
-                else:    
-                    notes += line
-            self.notes = notes.strip()
-    
+        with open(self.filepath, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        # Basic metadata
+        self.name = lines[0].strip() if len(lines) > 0 else ""
+        self.date = lines[1].strip() if len(lines) > 1 else ""
+        self.frequency = lines[2].strip() if len(lines) > 2 else ""
+        self.resources = [r.strip() for r in lines[3].split(",")] if len(lines) > 3 else []
+        self.additionalResources = lines[4].strip() if len(lines) > 4 else ""
+
     def displayChat(self):
-        ## Display chats's data 
-        print(f"File Path: {self.filepath}")
-        print(f"Name: {self.name}")
-        print(f"Date: {self.date}")
-        print(f"Frequency: {self.frequency}")
-        print(f"Resources: {self.resources}")
-        print(f"Extra Resources: {self.additionalResources}")
-        print("Notes")
-        print(self.notes)
-        
-        for q in self.questions:
-            print(f"Question: {q}")
+        print("\n" + "=" * 50)
+        print(f"📄 Chat Summary for: {self.name}")
+        print("=" * 50)
 
-        
-    
-class ProcessedChat:
-    def __init__(self, filepath: str, questions: list[str]):
-        self.filepath: str = filepath
-        self.questions: list[str] = questions
-        self.answers: list[str] = []
-        self.questionsNum: int = len(questions)
+        print(f"🗂️  File Path        : {self.filepath}")
+        print(f"✅ Processed         : {self.isProcessed}")
+        print(f"📅 Date              : {self.date}")
+        print(f"🔁 Frequency         : {self.frequency}")
+        print(f"📚 Resources         : {self.resources}")
+        print(f"➕ Extra Resources   : {self.additionalResources}")
 
-    def retrieveAnswers(self):
-        pass 
+        print("\n📝 Notes:")
+        print("-" * 50)
+
+        for i, note in enumerate(self.notes, 1):
+            print(f"\n  Note {i}:")
+            print(note.strip())
+
+        print("-" * 50)
+
+        print("\n❓ Questions:")
+        for i, q in enumerate(self.questions, 1):
+            print(f"  {i}. {q.strip()}")
+
+        print("\n💬 Answers:")
+        for i, a in enumerate(self.answers, 1):
+            if a and a.strip():
+                print(f"  {i}. {a.strip()}")
+
+        print("=" * 50 + "\n")
