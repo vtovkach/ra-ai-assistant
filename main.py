@@ -9,8 +9,8 @@ from mytypes import Chat
 questions: list[str] = []
 
 ## 
-processedChat: dict[str, Chat] = {}
-unprocessedChat: dict[str, Chat] = {}
+processedChats: dict[str, Chat] = {}
+unprocessedChats: dict[str, Chat] = {}
 
 def setupProgram():
 
@@ -28,22 +28,21 @@ def setupProgram():
 
     ## Retrieve processed chats 
     for path in Path("output").iterdir():
-        processedChat[path] = Chat(path, questions, True)
+        processedChats[path] = Chat(path, questions, True)
     
     ## Retrieve unprocessed chats
     for path in Path("notes").iterdir():
-        if path in processedChat:
+        if path in processedChats:
             continue
-        unprocessedChat[path] = Chat(path, questions, False)
+        unprocessedChats[path] = Chat(path, questions, False)
 
 def main():
     
     ## Set up program 
     setupProgram()
 
-    for chat in unprocessedChat.values():
-        chat.displayChat()
-
+    
+    
 # Run program here 
 if __name__ == "__main__":
     main()
