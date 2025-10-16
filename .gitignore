@@ -1,5 +1,6 @@
 .vscode/
 output/
 notes/
-config/
+config/api_key
+config/questions
 __pycache__
