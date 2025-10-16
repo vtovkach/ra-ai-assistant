@@ -2,15 +2,15 @@
 
 import os 
 from pathlib import Path
-from mytypes import ProcessedChat
-from mytypes import UnprocessedChat
+from mytypes import Chat
+from mytypes import Chat
 
 ## Questions 
 questions: list[str] = []
 
 ## 
-processedChat: dict[str, ProcessedChat] = {}
-unprocessedChat: dict[str, UnprocessedChat] = {}
+processedChat: dict[str, Chat] = {}
+unprocessedChat: dict[str, Chat] = {}
 
 def setupProgram():
 
@@ -28,16 +28,16 @@ def setupProgram():
 
     ## Retrieve processed chats 
     for path in Path("output").iterdir():
-        processedChat[path] = ProcessedChat(path, questions)
+        processedChat[path] = Chat(path, questions, True)
     
     ## Retrieve unprocessed chats
     for path in Path("notes").iterdir():
         if path in processedChat:
             continue
-        unprocessedChat[path] = UnprocessedChat(path, questions)
-
+        unprocessedChat[path] = Chat(path, questions, False)
 
 def main():
+    
     ## Set up program 
     setupProgram()
 
