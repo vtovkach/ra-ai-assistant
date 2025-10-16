@@ -16,7 +16,8 @@ class Chat:
 
         self.retrieveData()
 
-    def retrieveData(self):
+
+    def retrieveData(self) -> None:
         with open(self.filepath, "r", encoding="utf-8") as f:
             lines = f.readlines()
 
@@ -27,7 +28,47 @@ class Chat:
         self.resources = [r.strip() for r in lines[3].split(",")] if len(lines) > 3 else []
         self.additionalResources = lines[4].strip() if len(lines) > 4 else ""
 
-    def displayChat(self):
+        # Retrieve Notes and Answers 
+        buffer = ""
+        notes = True; 
+        for line in lines[5:]:
+            
+            if line.startswith("**"):
+                if buffer:
+                    if notes:
+                        # Append to notes 
+                        self.notes.append(buffer)
+                    else:
+                        # Append to asnswers
+                        self.answers.append(buffer)
+                buffer = ""
+                buffer += line.lstrip("*")
+                notes = True
+                
+            elif line.startswith("*"):
+                if buffer:
+                    if notes:
+                        # Append to notes 
+                        self.notes.append(buffer)
+                    else:
+                        # Append to answers 
+                        self.answers.append(buffer)
+                buffer = ""
+                buffer += line.lstrip("*")
+                notes = False 
+            
+            else:
+                buffer += line 
+            
+        # Add last buffer if it exists 
+        if buffer: 
+            if notes:
+                self.notes.append(buffer)
+            else:
+                self.answers.append(buffer)
+
+
+    def displayChat(self) -> None:
         print("\n" + "=" * 50)
         print(f"📄 Chat Summary for: {self.name}")
         print("=" * 50)
