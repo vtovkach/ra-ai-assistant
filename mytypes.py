@@ -1,5 +1,12 @@
-from dataclasses import dataclass
+from enum import IntEnum
 
+class ProgramField(IntEnum):
+    NAME = 0
+    DATE = 1
+    FREQUENCY = 2
+    RES = 3
+    OTHER_RES = 4
+    IS_SUBMITTED = 5
 
 class Chat:
     def __init__(self, filepath: str, questions: list[str], isProcessed: bool):
