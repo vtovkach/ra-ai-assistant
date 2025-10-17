@@ -5,6 +5,9 @@ from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
 
+# Load environment variables 
+load_dotenv()
+
 ## Questions 
 questions: list[str] = []
 
