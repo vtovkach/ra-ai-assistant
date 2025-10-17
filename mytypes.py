@@ -26,6 +26,14 @@ class Chat:
 
         self.retrieveData()
 
+    
+    def __eq__(self, other):
+       if isinstance(other, str):
+           return self.name == str
+       if isinstance(other, Chat):
+           return self.name == other.name
+       return False 
+
 
     def retrieveData(self) -> None:
         with open(self.filepath, "r", encoding="utf-8") as f:
