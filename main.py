@@ -4,6 +4,10 @@ import os
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
+from dotenv import load_dotenv
+
+# Load environment variables 
+load_dotenv()
 
 ## Questions 
 questions: list[str] = []
@@ -41,8 +45,12 @@ def main():
     ## Set up program 
     setupProgram()
 
-    
-    
+    for chat in unprocessedChats.values():
+        chat.processChat()
+
+    for chat in unprocessedChats.values():
+        chat.displayChat()
+
 # Run program here 
 if __name__ == "__main__":
     main()

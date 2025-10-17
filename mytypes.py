@@ -1,5 +1,14 @@
-from dataclasses import dataclass
+from enum import IntEnum
+from ai_assistant import *
 
+class ProgramField(IntEnum):
+    NAME = 0
+    DATE = 1
+    FREQUENCY = 2
+    RES = 3
+    OTHER_RES = 4
+    IS_SUBMITTED = 5
+    NOTES = 6
 
 class Chat:
     def __init__(self, filepath: str, questions: list[str], isProcessed: bool):
@@ -13,6 +22,7 @@ class Chat:
         self.frequency: str = ""
         self.resources: list[str] = []
         self.additionalResources: str = "" 
+        self.isSubmitted: bool = False
 
         self.retrieveData()
 
@@ -22,16 +32,17 @@ class Chat:
             lines = f.readlines()
 
         # Basic metadata
-        self.name = lines[0].strip() if len(lines) > 0 else ""
-        self.date = lines[1].strip() if len(lines) > 1 else ""
-        self.frequency = lines[2].strip() if len(lines) > 2 else ""
-        self.resources = [r.strip() for r in lines[3].split(",")] if len(lines) > 3 else []
-        self.additionalResources = lines[4].strip() if len(lines) > 4 else ""
-
+        self.name = lines[ProgramField.NAME].strip() if len(lines) > 0 else ""
+        self.date = lines[ProgramField.DATE].strip() if len(lines) > 1 else ""
+        self.frequency = lines[ProgramField.FREQUENCY].strip() if len(lines) > 2 else ""
+        self.resources = [r.strip() for r in lines[ProgramField.RES].split(",")] if len(lines) > 3 else []
+        self.additionalResources = lines[ProgramField.OTHER_RES].strip() if len(lines) > 4 else ""
+        self.isSubmitted = lines[ProgramField.IS_SUBMITTED].strip().lower()
+        
         # Retrieve Notes and Answers 
         buffer = ""
         notes = True; 
-        for line in lines[5:]:
+        for line in lines[ProgramField.NOTES:]:
             
             if line.startswith("**"):
                 if buffer:
@@ -79,7 +90,7 @@ class Chat:
         print(f"🔁 Frequency         : {self.frequency}")
         print(f"📚 Resources         : {self.resources}")
         print(f"➕ Extra Resources   : {self.additionalResources}")
-
+        print(f"Is Submitted: {self.isSubmitted}")
         print("\n📝 Notes:")
         print("-" * 50)
 
@@ -99,3 +110,16 @@ class Chat:
                 print(f"  {i}. {a.strip()}")
 
         print("=" * 50 + "\n")
+
+    def processChat(self) -> None:
+
+        # Ensure the chat is not processed yet 
+        if self.isProcessed == True:
+            return 
+        
+        for i, q in enumerate(self.questions):
+            answer = getAnswer(q, self.notes[i])
+            self.answers.append(answer)
+
+        # Mark chat as processed 
+        self.isProcessed = True
