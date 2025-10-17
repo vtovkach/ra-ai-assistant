@@ -20,6 +20,7 @@ class Chat:
         self.frequency: str = ""
         self.resources: list[str] = []
         self.additionalResources: str = "" 
+        self.isSubmitted: bool = False
 
         self.retrieveData()
 
@@ -29,12 +30,13 @@ class Chat:
             lines = f.readlines()
 
         # Basic metadata
-        self.name = lines[0].strip() if len(lines) > 0 else ""
-        self.date = lines[1].strip() if len(lines) > 1 else ""
-        self.frequency = lines[2].strip() if len(lines) > 2 else ""
-        self.resources = [r.strip() for r in lines[3].split(",")] if len(lines) > 3 else []
-        self.additionalResources = lines[4].strip() if len(lines) > 4 else ""
-
+        self.name = lines[ProgramField.NAME].strip() if len(lines) > 0 else ""
+        self.date = lines[ProgramField.DATE].strip() if len(lines) > 1 else ""
+        self.frequency = lines[ProgramField.FREQUENCY].strip() if len(lines) > 2 else ""
+        self.resources = [r.strip() for r in lines[ProgramField.RES].split(",")] if len(lines) > 3 else []
+        self.additionalResources = lines[ProgramField.OTHER_RES].strip() if len(lines) > 4 else ""
+        self.isSubmitted = lines[ProgramField.IS_SUBMITTED].strip().lower()
+        
         # Retrieve Notes and Answers 
         buffer = ""
         notes = True; 
@@ -86,7 +88,7 @@ class Chat:
         print(f"🔁 Frequency         : {self.frequency}")
         print(f"📚 Resources         : {self.resources}")
         print(f"➕ Extra Resources   : {self.additionalResources}")
-
+        print(f"Is Submitted: {self.isSubmitted}")
         print("\n📝 Notes:")
         print("-" * 50)
 
