@@ -108,3 +108,16 @@ class Chat:
                 print(f"  {i}. {a.strip()}")
 
         print("=" * 50 + "\n")
+
+    def processChat(self) -> None:
+        
+        # Ensure the chat is not processed yet 
+        if self.isProcessed == False:
+            return 
+        
+        for i, q in enumerate(self.questions):
+            answer = getAnswer(q, self.notes[i])
+            self.answers[i] = answer
+        
+        # Mark chat as processed 
+        self.isProcessed = True
