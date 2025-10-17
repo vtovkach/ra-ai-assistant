@@ -8,6 +8,7 @@ class ProgramField(IntEnum):
     RES = 3
     OTHER_RES = 4
     IS_SUBMITTED = 5
+    NOTES = 6
 
 class Chat:
     def __init__(self, filepath: str, questions: list[str], isProcessed: bool):
@@ -41,7 +42,7 @@ class Chat:
         # Retrieve Notes and Answers 
         buffer = ""
         notes = True; 
-        for line in lines[5:]:
+        for line in lines[ProgramField.NOTES:]:
             
             if line.startswith("**"):
                 if buffer:
@@ -111,14 +112,14 @@ class Chat:
         print("=" * 50 + "\n")
 
     def processChat(self) -> None:
-        
+
         # Ensure the chat is not processed yet 
-        if self.isProcessed == False:
+        if self.isProcessed == True:
             return 
         
         for i, q in enumerate(self.questions):
             answer = getAnswer(q, self.notes[i])
-            self.answers[i] = answer
-        
+            self.answers.append(answer)
+
         # Mark chat as processed 
         self.isProcessed = True
