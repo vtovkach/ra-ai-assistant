@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
+from dotenv import load_dotenv
 
 # Load environment variables 
 load_dotenv()
