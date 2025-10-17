@@ -46,12 +46,11 @@ def main():
     setupProgram()
 
     for chat in unprocessedChats.values():
+        chat.processChat()
+
+    for chat in unprocessedChats.values():
         chat.displayChat()
 
-    for chat in processedChats.values():
-        chat.displayChat()
-    
-    
 # Run program here 
 if __name__ == "__main__":
     main()
