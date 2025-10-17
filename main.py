@@ -41,6 +41,11 @@ def main():
     ## Set up program 
     setupProgram()
 
+    for chat in unprocessedChats.values():
+        chat.displayChat()
+
+    for chat in processedChats.values():
+        chat.displayChat()
     
     
 # Run program here 
