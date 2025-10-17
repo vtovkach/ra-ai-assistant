@@ -1,4 +1,5 @@
 from enum import IntEnum
+from ai_assistant import *
 
 class ProgramField(IntEnum):
     NAME = 0
