@@ -31,16 +31,19 @@ def setupProgram():
     ## Retrieve chats  
     for path in Path("notes").iterdir():
         chats.append(Chat(path, questions))
-    
+
 def main():
     
     ## Set up program 
     setupProgram()
 
-    
-    for chat in chats:
-        chat.displayChat()
+    userInput = ["."]
+    while(userInput[0] != "exit"):
+
+        # Use the name of the resident for selection 
+        userInput = input("(RA Vadym) ").split()
         
+
 
 # Run program here 
 if __name__ == "__main__":
