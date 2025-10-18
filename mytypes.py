@@ -12,9 +12,9 @@ class ProgramField(IntEnum):
     NOTES = 7
 
 class Chat:
-    def __init__(self, filepath: str, questions: list[str], isProcessed: bool):
+    def __init__(self, filepath: str, questions: list[str]):
         self.filepath: str = filepath
-        self.isProcessed = isProcessed
+        self.isProcessed = False
         self.questions: list[str] = questions
         self.answers: list[str] = []
         self.notes: list[str] = []
@@ -134,3 +134,6 @@ class Chat:
 
         # Mark chat as processed 
         self.isProcessed = True
+    
+    def saveChats(self) -> None:
+        pass 
