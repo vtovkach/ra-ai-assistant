@@ -8,7 +8,8 @@ class ProgramField(IntEnum):
     RES = 3
     OTHER_RES = 4
     IS_SUBMITTED = 5
-    NOTES = 6
+    IS_PROCESSED = 6
+    NOTES = 7
 
 class Chat:
     def __init__(self, filepath: str, questions: list[str], isProcessed: bool):
@@ -46,6 +47,7 @@ class Chat:
         self.resources = [r.strip() for r in lines[ProgramField.RES].split(",")] if len(lines) > 3 else []
         self.additionalResources = lines[ProgramField.OTHER_RES].strip() if len(lines) > 4 else ""
         self.isSubmitted = lines[ProgramField.IS_SUBMITTED].strip().lower()
+        self.isProcessed = lines[ProgramField.IS_PROCESSED].strip().lower()
         
         # Retrieve Notes and Answers 
         buffer = ""
@@ -98,7 +100,8 @@ class Chat:
         print(f"🔁 Frequency         : {self.frequency}")
         print(f"📚 Resources         : {self.resources}")
         print(f"➕ Extra Resources   : {self.additionalResources}")
-        print(f"Is Submitted: {self.isSubmitted}")
+        print(f" Is Submitted        : {self.isSubmitted}")  
+        print(f" Is processed        : {self.isProcessed}")
         print("\n📝 Notes:")
         print("-" * 50)
 
