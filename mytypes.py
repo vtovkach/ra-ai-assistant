@@ -26,6 +26,10 @@ class Chat:
 
         self.retrieveData()
 
+    def __eq__(self, other):
+        if not isinstance(other, Chat):
+            return NotImplemented
+        return self.name == other.name
 
     def retrieveData(self) -> None:
         with open(self.filepath, "r", encoding="utf-8") as f:

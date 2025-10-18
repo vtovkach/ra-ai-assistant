@@ -12,7 +12,6 @@ load_dotenv()
 ## Questions 
 questions: list[str] = []
 
-## 
 processedChats: dict[str, Chat] = {}
 unprocessedChats: dict[str, Chat] = {}
 
@@ -32,7 +31,7 @@ def setupProgram():
 
     ## Retrieve processed chats 
     for path in Path("output").iterdir():
-        processedChats[path] = Chat(path, questions, True)
+        processedChats.append(Chat(path, questions, True))
     
     ## Retrieve unprocessed chats
     for path in Path("notes").iterdir():
@@ -45,10 +44,10 @@ def main():
     ## Set up program 
     setupProgram()
 
-    for chat in unprocessedChats.values():
+    for chat in unprocessedChats:
         chat.processChat()
 
-    for chat in unprocessedChats.values():
+    for chat in unprocessedChats:
         chat.displayChat()
 
 # Run program here 
