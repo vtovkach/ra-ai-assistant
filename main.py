@@ -12,9 +12,7 @@ load_dotenv()
 ## Questions 
 questions: list[str] = []
 
-## 
-processedChats: dict[str, Chat] = {}
-unprocessedChats: dict[str, Chat] = {}
+chats: list[Chat] = []
 
 def setupProgram():
 
@@ -30,26 +28,19 @@ def setupProgram():
             else: 
                 cur_question += line
 
-    ## Retrieve processed chats 
-    for path in Path("output").iterdir():
-        processedChats[path] = Chat(path, questions, True)
-    
-    ## Retrieve unprocessed chats
+    ## Retrieve chats  
     for path in Path("notes").iterdir():
-        if path in processedChats:
-            continue
-        unprocessedChats[path] = Chat(path, questions, False)
-
+        chats.append(Chat(path, questions))
+    
 def main():
     
     ## Set up program 
     setupProgram()
 
-    for chat in unprocessedChats.values():
-        chat.processChat()
-
-    for chat in unprocessedChats.values():
+    
+    for chat in chats:
         chat.displayChat()
+        
 
 # Run program here 
 if __name__ == "__main__":

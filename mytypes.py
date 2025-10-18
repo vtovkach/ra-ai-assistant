@@ -8,12 +8,13 @@ class ProgramField(IntEnum):
     RES = 3
     OTHER_RES = 4
     IS_SUBMITTED = 5
-    NOTES = 6
+    IS_PROCESSED = 6
+    NOTES = 7
 
 class Chat:
-    def __init__(self, filepath: str, questions: list[str], isProcessed: bool):
+    def __init__(self, filepath: str, questions: list[str]):
         self.filepath: str = filepath
-        self.isProcessed = isProcessed
+        self.isProcessed = False
         self.questions: list[str] = questions
         self.answers: list[str] = []
         self.notes: list[str] = []
@@ -25,6 +26,14 @@ class Chat:
         self.isSubmitted: bool = False
 
         self.retrieveData()
+
+    
+    def __eq__(self, other):
+       if isinstance(other, str):
+           return self.name == str
+       if isinstance(other, Chat):
+           return self.name == other.name
+       return False 
 
 
     def retrieveData(self) -> None:
@@ -38,6 +47,7 @@ class Chat:
         self.resources = [r.strip() for r in lines[ProgramField.RES].split(",")] if len(lines) > 3 else []
         self.additionalResources = lines[ProgramField.OTHER_RES].strip() if len(lines) > 4 else ""
         self.isSubmitted = lines[ProgramField.IS_SUBMITTED].strip().lower()
+        self.isProcessed = lines[ProgramField.IS_PROCESSED].strip().lower()
         
         # Retrieve Notes and Answers 
         buffer = ""
@@ -90,7 +100,8 @@ class Chat:
         print(f"🔁 Frequency         : {self.frequency}")
         print(f"📚 Resources         : {self.resources}")
         print(f"➕ Extra Resources   : {self.additionalResources}")
-        print(f"Is Submitted: {self.isSubmitted}")
+        print(f" Is Submitted        : {self.isSubmitted}")  
+        print(f" Is processed        : {self.isProcessed}")
         print("\n📝 Notes:")
         print("-" * 50)
 
@@ -123,3 +134,6 @@ class Chat:
 
         # Mark chat as processed 
         self.isProcessed = True
+    
+    def saveChats(self) -> None:
+        pass 
