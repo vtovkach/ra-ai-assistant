@@ -48,6 +48,9 @@ def main():
         if userInput[0] == "exit":
             break
 
+        if userInput[0] == "status":
+            print("Status Operation")
+
         if userInput[0] == "show":
             print("Show Operation") 
         
@@ -56,6 +59,22 @@ def main():
 
         if userInput[0] == "submit":
             print("Submit Operation")
+
+
+def displayStatus() -> None:
+    pass 
+
+
+def showChats(names: list[str]) -> None:
+    pass
+
+
+def processChats(names: list[str]) -> None:
+    pass 
+
+
+def submitChats(names: list[str]) -> None:
+    pass 
 
 
 # Run program here 
