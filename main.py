@@ -1,6 +1,5 @@
 # Program Manager 
 
-import os 
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
@@ -31,16 +30,52 @@ def setupProgram():
     ## Retrieve chats  
     for path in Path("notes").iterdir():
         chats.append(Chat(path, questions))
-    
+
 def main():
     
     ## Set up program 
     setupProgram()
 
-    
-    for chat in chats:
-        chat.displayChat()
+    userInput = []
+    while(True):
+
+        # Use the name of the resident for selection 
+        userInput = input("(RA Vadym) ").split()
         
+        if len(userInput) <= 0:
+            continue
+        
+        if userInput[0] == "exit":
+            break
+
+        if userInput[0] == "status":
+            print("Status Operation")
+
+        if userInput[0] == "show":
+            print("Show Operation") 
+        
+        if userInput[0] == "process":
+            print("Processing Operation")
+
+        if userInput[0] == "submit":
+            print("Submit Operation")
+
+
+def displayStatus() -> None:
+    pass 
+
+
+def showChats(names: list[str]) -> None:
+    pass
+
+
+def processChats(names: list[str]) -> None:
+    pass 
+
+
+def submitChats(names: list[str]) -> None:
+    pass 
+
 
 # Run program here 
 if __name__ == "__main__":
