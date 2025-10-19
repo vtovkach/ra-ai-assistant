@@ -1,6 +1,5 @@
 # Program Manager 
 
-import os 
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
@@ -37,12 +36,26 @@ def main():
     ## Set up program 
     setupProgram()
 
-    userInput = ["."]
-    while(userInput[0] != "exit"):
+    userInput = []
+    while(True):
 
         # Use the name of the resident for selection 
         userInput = input("(RA Vadym) ").split()
         
+        if len(userInput) <= 0:
+            continue
+        
+        if userInput[0] == "exit":
+            break
+
+        if userInput[0] == "show":
+            print("Show Operation") 
+        
+        if userInput[0] == "process":
+            print("Processing Operation")
+
+        if userInput[0] == "submit":
+            print("Submit Operation")
 
 
 # Run program here 
