@@ -30,7 +30,7 @@ class Chat:
     
     def __eq__(self, other):
        if isinstance(other, str):
-           return self.name == str
+           return self.name.split()[0] == other
        if isinstance(other, Chat):
            return self.name == other.name
        return False 
@@ -134,6 +134,9 @@ class Chat:
 
         # Mark chat as processed 
         self.isProcessed = True
-    
+
+    def submitChat(self) -> None:
+        print(f"Submitting chat with resident {self.name}.")
+        
     def saveChats(self) -> None:
         pass 
