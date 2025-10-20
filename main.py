@@ -1,5 +1,6 @@
 # Program Manager 
 
+import os
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
@@ -52,13 +53,17 @@ def main():
             displayStatus()
 
         if userInput[0] == "show":
-            print("Show Operation") 
+            showChats(userInput[1:])
+            continue
         
         if userInput[0] == "process":
             print("Processing Operation")
 
         if userInput[0] == "submit":
             print("Submit Operation")
+
+        if userInput[0] == "clear":
+            os.system("clear")
 
 
 def displayStatus() -> None:
@@ -75,7 +80,25 @@ def displayStatus() -> None:
         print("-" * 75)
 
 def showChats(names: list[str]) -> None:
-    pass
+    
+    if len(names) <= 0:
+        return 
+    
+    if names[0] == "all":
+        # Display all chats 
+        for chat in chats:
+            chat.displayChat()
+        return 
+    
+    # Display chats based on input names
+
+    for name in names:
+        try:
+            targetIndex = chats.index(name)
+            chats[targetIndex].displayChat()
+        except ValueError:
+            print(f"Resident {name} does not exist!")
+            continue
 
 
 def processChats(names: list[str]) -> None:
