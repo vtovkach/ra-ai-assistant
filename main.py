@@ -1,5 +1,6 @@
 # Program Manager 
 
+import os
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
@@ -29,7 +30,7 @@ def setupProgram():
 
     ## Retrieve chats  
     for path in Path("notes").iterdir():
-        chats.append(Chat(path, questions))
+        chats.append(Chat(str(path), questions))
 
 def main():
     
@@ -49,32 +50,100 @@ def main():
             break
 
         if userInput[0] == "status":
-            print("Status Operation")
+            displayStatus()
+            continue
 
         if userInput[0] == "show":
-            print("Show Operation") 
+            showChats(userInput[1:])
+            continue
         
         if userInput[0] == "process":
-            print("Processing Operation")
+            processChats(userInput[1:])
+            continue
 
         if userInput[0] == "submit":
-            print("Submit Operation")
+            submitChats(userInput[1:])
+            continue
+
+        if userInput[0] == "clear":
+            os.system("clear")
+            continue
 
 
 def displayStatus() -> None:
-    pass 
 
+    if not chats:
+        print("No chats to display")
+        return 
+    
+    print(f"{'File Path':<25} {'Name':<25} {'Processed':<10} {'Submitted':<10}")
+    print("-" * 75)
+
+    for chat in chats:
+        print(f"{chat.filepath:<25} {chat.name:<25} {'Yes' if chat.isProcessed else 'False':<10} {'Yes' if chat.isSubmitted else 'False':<10}")
+        print("-" * 75)
 
 def showChats(names: list[str]) -> None:
-    pass
+    
+    if len(names) <= 0:
+        return 
+    
+    if names[0] == "all":
+        # Display all chats 
+        for chat in chats:
+            chat.displayChat()
+        return 
+    
+    # Display chats based on input names
+
+    for name in names:
+        try:
+            targetIndex = chats.index(name)
+            chats[targetIndex].displayChat()
+        except ValueError:
+            print(f"Resident {name} does not exist!")
+            continue
 
 
 def processChats(names: list[str]) -> None:
-    pass 
 
+    if len(names) <= 0:
+        return 
+
+    if names[0] == "all":
+        # process all chats 
+        for chat in chats:
+            #chat.processChat()
+            print(f"Chat with resident {chat.name} is being processed.")
+        return    
+    
+    for name in names:
+        try:
+            targetIndex = chats.index(name)
+            # chats[targetIndex].processChat()
+            print("Chat gets processed!")
+        except ValueError:
+            print(f"Resident {name} does not exist!")
+            continue
+    
 
 def submitChats(names: list[str]) -> None:
-    pass 
+    
+    if len(names) <= 0:
+        return
+
+    if names[0] == "all":
+        for chat in chats:
+            chat.submitChat()
+        return 
+
+    for name in names:
+        try:
+            targetIndex = chats.index(name)
+            chats[targetIndex].submitChat()
+        except ValueError:
+            print(f"Resident {name} does not exist.")
+            continue
 
 
 # Run program here 
