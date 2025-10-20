@@ -58,7 +58,8 @@ def main():
             print("Processing Operation")
 
         if userInput[0] == "submit":
-            print("Submit Operation")
+            submitChats(userInput[1:])
+            continue
 
 
 def displayStatus() -> None:
@@ -74,7 +75,22 @@ def processChats(names: list[str]) -> None:
 
 
 def submitChats(names: list[str]) -> None:
-    pass 
+    
+    if len(names) <= 0:
+        return
+
+    if names[0] == "all":
+        for chat in chats:
+            chat.submitChat()
+        return 
+
+    for name in names:
+        try:
+            targetIndex = chats.index(name)
+            chats[targetIndex].submitChat()
+        except ValueError:
+            print(f"Resident {name} does not exist.")
+            continue
 
 
 # Run program here 
