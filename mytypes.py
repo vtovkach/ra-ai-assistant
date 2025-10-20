@@ -46,8 +46,12 @@ class Chat:
         self.frequency = lines[ProgramField.FREQUENCY].strip() if len(lines) > 2 else ""
         self.resources = [r.strip() for r in lines[ProgramField.RES].split(",")] if len(lines) > 3 else []
         self.additionalResources = lines[ProgramField.OTHER_RES].strip() if len(lines) > 4 else ""
-        self.isSubmitted = lines[ProgramField.IS_SUBMITTED].strip().lower()
-        self.isProcessed = lines[ProgramField.IS_PROCESSED].strip().lower()
+
+        if lines[ProgramField.IS_PROCESSED].strip().lower() == "true":
+            self.isProcessed = True
+
+        if lines[ProgramField.IS_SUBMITTED].strip().lower() == "true":
+            self.isSubmitted = True
         
         # Retrieve Notes and Answers 
         buffer = ""

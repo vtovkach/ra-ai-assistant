@@ -29,7 +29,7 @@ def setupProgram():
 
     ## Retrieve chats  
     for path in Path("notes").iterdir():
-        chats.append(Chat(path, questions))
+        chats.append(Chat(str(path), questions))
 
 def main():
     
@@ -49,7 +49,7 @@ def main():
             break
 
         if userInput[0] == "status":
-            print("Status Operation")
+            displayStatus()
 
         if userInput[0] == "show":
             print("Show Operation") 
@@ -62,8 +62,17 @@ def main():
 
 
 def displayStatus() -> None:
-    pass 
 
+    if not chats:
+        print("No chats to display")
+        return 
+    
+    print(f"{'File Path':<25} {'Name':<25} {'Processed':<10} {'Submitted':<10}")
+    print("-" * 75)
+
+    for chat in chats:
+        print(f"{chat.filepath:<25} {chat.name:<25} {'Yes' if chat.isProcessed else 'False':<10} {'Yes' if chat.isSubmitted else 'False':<10}")
+        print("-" * 75)
 
 def showChats(names: list[str]) -> None:
     pass
