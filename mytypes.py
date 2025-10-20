@@ -138,6 +138,9 @@ class Chat:
 
         # Mark chat as processed 
         self.isProcessed = True
-    
+
+    def submitChat(self) -> None:
+        print(f"Submitting chat with resident {self.name}.")
+        
     def saveChats(self) -> None:
         pass 
