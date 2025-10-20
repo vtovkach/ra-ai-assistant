@@ -30,7 +30,7 @@ class Chat:
     
     def __eq__(self, other):
        if isinstance(other, str):
-           return self.name == str
+           return self.name.split()[0] == other
        if isinstance(other, Chat):
            return self.name == other.name
        return False 
