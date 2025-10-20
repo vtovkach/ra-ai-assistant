@@ -51,6 +51,7 @@ def main():
 
         if userInput[0] == "status":
             displayStatus()
+            continue
 
         if userInput[0] == "show":
             showChats(userInput[1:])
@@ -66,6 +67,7 @@ def main():
 
         if userInput[0] == "clear":
             os.system("clear")
+            continue
 
 
 def displayStatus() -> None:
