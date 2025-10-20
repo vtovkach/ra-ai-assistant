@@ -29,7 +29,7 @@ def setupProgram():
 
     ## Retrieve chats  
     for path in Path("notes").iterdir():
-        chats.append(Chat(path, questions))
+        chats.append(Chat(str(path), questions))
 
 def main():
     
