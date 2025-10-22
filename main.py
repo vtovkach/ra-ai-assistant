@@ -47,6 +47,8 @@ def main():
             continue
         
         if userInput[0] == "exit":
+            # Save all chats before exiting 
+            saveChats(["all"])
             break
 
         if userInput[0] == "status":
