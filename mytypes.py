@@ -1,5 +1,8 @@
 from enum import IntEnum
 from ai_assistant import *
+from datetime import datetime
+from typing import Self
+import asyncio
 
 class ProgramField(IntEnum):
     NAME = 0
@@ -126,18 +129,25 @@ class Chat:
 
         print("=" * 50 + "\n")
 
-    def processChat(self) -> None:
+    async def processChat(self) -> tuple[Self, bool]:
 
         # Ensure the chat is not processed yet 
-        if self.isProcessed == True:
-            return 
+        if self.isProcessed:
+            return self, False
         
         for i, q in enumerate(self.questions):
-            answer = getAnswer(q, self.notes[i], self.name.split()[0])
-            self.answers.append(answer)
-
+            try:
+                answer = await asyncio.to_thread(getAnswer, q, self.notes[i], self.name)
+                self.answers.append(answer)
+            except Exception as e:
+                with open("log.txt", "a") as f:
+                    f.write(f"[{datetime.now()}] {str(e)}\n")
+                return self, False
+                
         # Mark chat as processed 
         self.isProcessed = True
+        
+        return self, True
 
     def submitChat(self) -> None:
         print(f"Submitting chat with resident {self.name}.")

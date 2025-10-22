@@ -1,6 +1,7 @@
 # Program Manager 
 
 import os
+import asyncio
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
@@ -109,30 +110,44 @@ def showChats(names: list[str]) -> None:
             print(f"Resident {name} does not exist!")
             continue
 
-# Integrate async requests later 
-def processChats(names: list[str]) -> None:
 
-    if len(names) <= 0:
+def processChats(names: list[str]):
+    if not names:
         return 
 
     print("Processing...")
 
+    coroutines = []
+
     if names[0] == "all":
         # process all chats 
         for chat in chats:
-            chat.processChat()
-            print(f"Chat with resident {chat.name} is processed.")
-        return    
+            coroutines.append(chat.processChat())
+            print(f"Chat with resident {chat.name} is being processed...")   
+    else:
+        for name in names:
+            try:
+                targetIndex = chats.index(name)
+                coroutines.append(chats[targetIndex].processChat())
+                print(f"Chat with resident {chats[targetIndex].name} is being processed...")
+            except ValueError:
+                print(f"Resident {name} does not exist!")
+                continue
     
-    for name in names:
-        try:
-            targetIndex = chats.index(name)
-            chats[targetIndex].processChat()
-            print(f"Chat with resident {chats[targetIndex].name} is processed.")
-        except ValueError:
-            print(f"Resident {name} does not exist!")
-            continue
+    if not coroutines:
+        return 
+
+    async def run_all():
+        return await asyncio.gather(*coroutines)
+
+    # Wait for every coroutine to finish 
+    results = asyncio.run(run_all())
     
+    # Display result 
+    for chat, processed in results:
+        status = "processed ✅" if processed else "not processed ❌"
+        print(f"Chat with resident {chat.name} is {status}")
+
 
 def submitChats(names: list[str]) -> None:
     
