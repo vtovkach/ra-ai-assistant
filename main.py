@@ -65,6 +65,9 @@ def main():
             submitChats(userInput[1:])
             continue
 
+        if userInput[0] == "save":
+            saveChats(userInput[1:])
+
         if userInput[0] == "clear":
             os.system("clear")
             continue
@@ -147,6 +150,32 @@ def submitChats(names: list[str]) -> None:
             print(f"Resident {name} does not exist.")
             continue
 
+
+def saveChats(names: list[str]) -> None:
+    if len(names) <= 0:
+        return
+
+    if names[0] == "all":
+        for chat in chats:
+            try:
+                chat.saveChat()
+                print(f"Chat with resident {chat.name} is saved ✅")
+            except Exception as e:
+                print(f"Failed to save chat with resident {chat.name} ❌")
+                continue
+        return 
+
+    for name in names:
+        try:
+            targetIndex = chats.index(name)
+            chats[targetIndex].saveChat()
+            print(f"Chat with resident {chats[targetIndex].name} is saved ✅")
+        except ValueError:
+            print(f"Resident {name} does not exist.")
+            continue
+        except Exception as e:
+            print(f"Failed to save chat with resident {chats[targetIndex].name} ❌ ")
+            continue
 
 # Run program here 
 if __name__ == "__main__":
