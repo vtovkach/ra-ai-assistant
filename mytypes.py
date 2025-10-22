@@ -1,5 +1,6 @@
 from enum import IntEnum
 from ai_assistant import *
+import asyncio
 
 class ProgramField(IntEnum):
     NAME = 0
@@ -126,7 +127,7 @@ class Chat:
 
         print("=" * 50 + "\n")
 
-    def processChat(self) -> None:
+    async def processChat(self) -> None:
 
         # Ensure the chat is not processed yet 
         if self.isProcessed == True:
