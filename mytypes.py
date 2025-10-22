@@ -133,7 +133,7 @@ class Chat:
             return 
         
         for i, q in enumerate(self.questions):
-            answer = getAnswer(q, self.notes[i])
+            answer = getAnswer(q, self.notes[i], self.name.split()[0])
             self.answers.append(answer)
 
         # Mark chat as processed 
@@ -171,10 +171,11 @@ class Chat:
             # Save Notes
             for note in self.notes:
                 f.write("**" + note)
+            f.write("\n")
 
             # Save Answers
             for answer in self.answers:
-                f.write("*" + answer)
+                f.write("*" + answer + "\n")
                 
         # Delete old file and rename the temp.txt 
         if os.path.exists(self.filepath):
