@@ -104,24 +104,26 @@ def showChats(names: list[str]) -> None:
             print(f"Resident {name} does not exist!")
             continue
 
-
+# Integrate async requests later 
 def processChats(names: list[str]) -> None:
 
     if len(names) <= 0:
         return 
 
+    print("Processing...")
+
     if names[0] == "all":
         # process all chats 
         for chat in chats:
-            #chat.processChat()
-            print(f"Chat with resident {chat.name} is being processed.")
+            chat.processChat()
+            print(f"Chat with resident {chat.name} is processed.")
         return    
     
     for name in names:
         try:
             targetIndex = chats.index(name)
-            # chats[targetIndex].processChat()
-            print("Chat gets processed!")
+            chats[targetIndex].processChat()
+            print(f"Chat with resident {chats[targetIndex].name} is processed.")
         except ValueError:
             print(f"Resident {name} does not exist!")
             continue
