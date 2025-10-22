@@ -142,5 +142,41 @@ class Chat:
     def submitChat(self) -> None:
         print(f"Submitting chat with resident {self.name}.")
         
-    def saveChats(self) -> None:
-        pass 
+    def saveChat(self) -> None:
+
+        ### Structure of the file 
+        # Line 1: Resident Name
+        # Line 2: Date when the conversation happened 
+        # Line 3: Frequency
+        # Line 4: Resources (separate with coma) 
+        # Line 5: Additional Resources 
+        # Line 6: Is submitted 
+        # Line 7: Is processed 
+        # Line 8 to Line n: **Notes
+        # Line n + 1 to Line k: *Answers  
+
+        with open("notes/temp.txt", "w", encoding="utf-8") as f:
+
+            f.write(self.name + "\n")
+            f.write(self.date + "\n")
+            f.write(self.frequency + "\n")
+
+            # Save resources 
+            f.write(", ".join(self.resources) + "\n")
+
+            f.write(self.additionalResources + "\n")
+            f.write(str(self.isSubmitted) + "\n")
+            f.write(str(self.isProcessed) + "\n")
+
+            # Save Notes
+            for note in self.notes:
+                f.write("**" + note)
+
+            # Save Answers
+            for answer in self.answers:
+                f.write("*" + answer)
+                
+        # Delete old file and rename the temp.txt 
+        if os.path.exists(self.filepath):
+            os.remove(self.filepath)
+        os.replace("notes/temp.txt", self.filepath)
