@@ -1,6 +1,7 @@
 # Program Manager 
 
 import os
+import asyncio
 from pathlib import Path
 from mytypes import Chat
 from mytypes import Chat
@@ -117,18 +118,22 @@ def processChats(names: list[str]) -> None:
 
     print("Processing...")
 
+    tasks = []
+
     if names[0] == "all":
         # process all chats 
         for chat in chats:
-            chat.processChat()
-            print(f"Chat with resident {chat.name} is processed.")
+            task = asyncio.create_task(chat.processChat())
+            tasks.append(task)
+            print(f"Chat with resident {chat.name} is being processed...")
         return    
     
     for name in names:
         try:
             targetIndex = chats.index(name)
-            chats[targetIndex].processChat()
-            print(f"Chat with resident {chats[targetIndex].name} is processed.")
+            task = asyncio.create_task(chats[targetIndex].processChat())
+            tasks.append(task)
+            print(f"Chat with resident {chats[targetIndex].name} is being processed...")
         except ValueError:
             print(f"Resident {name} does not exist!")
             continue
