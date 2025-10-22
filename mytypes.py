@@ -1,7 +1,6 @@
 from enum import IntEnum
 from ai_assistant import *
 from datetime import datetime
-from typing import Self
 import asyncio
 
 class ProgramField(IntEnum):
@@ -129,7 +128,7 @@ class Chat:
 
         print("=" * 50 + "\n")
 
-    async def processChat(self) -> tuple[Self, bool]:
+    async def processChat(self) -> tuple["self", bool]:
 
         # Ensure the chat is not processed yet 
         if self.isProcessed:
