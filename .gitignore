@@ -5,3 +5,4 @@ config/api_key
 config/questions
 __pycache__
 .env
+log.txt
