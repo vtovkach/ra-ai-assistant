@@ -50,34 +50,40 @@ def login() -> bool:
 def end_session():
     global playwright, browser, context, page
 
-    closed = False
+    def log_error(e):
+        with open("log.txt", "a", encoding="utf-8") as f:
+            f.write(f"[{datetime.datetime.now()}] {repr(e)}\n")
 
+    # Close context
     try:
         if context:
             context.clear_cookies()
-            closed = True
+            context.close()
     except Exception as e:
-        with open("log.txt", "a", encoding="utf-8") as f:
-            f.write(f"[{datetime.datetime.now()}] {e}\n") 
+        log_error(e)
+    finally:
+        context = None  
+
+    # Close browser
     try:
         if browser:
             browser.close()
-            closed = True
     except Exception as e:
-        with open("log.txt", "a", encoding="utf-8") as f:
-            f.write(f"[{datetime.datetime.now()}] {e}\n") 
+        log_error(e)
+    finally:
+        browser = None  
+
+    # Stop Playwright
     try:
         if playwright:
             playwright.stop()
-            closed = True
     except Exception as e:
-        with open("log.txt", "a", encoding="utf-8") as f:
-            f.write(f"[{datetime.datetime.now()}] {e}\n")
+        log_error(e)
+    finally:
+        playwright = None  
 
-    if closed:
-        print("✅ Session closed and cleaned up.")
-    else:
-        print("⚠️ No active session to close.")
+    page = None
+    print("✅ Session closed and cleaned up.")
 
 
 if __name__ == "__main__":
