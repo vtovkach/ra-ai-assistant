@@ -86,6 +86,9 @@ def end_session():
     print("✅ Session closed and cleaned up.")
 
 
+
+## The following code is used only for testing 
+
 if __name__ == "__main__":
     if login():
         print("✅ Session is opened.")
