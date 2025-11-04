@@ -4,6 +4,8 @@ import os
 import datetime
 from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
+from mytypes import Chat
+import time 
 
 # Load environment variables 
 load_dotenv()
@@ -85,6 +87,56 @@ def end_session():
     page = None
     print("✅ Session closed and cleaned up.")
 
+def submitForm(chat : Chat) -> bool:
+    if playwright == None or browser == None or context == None or page == None:
+        end_session()
+        # Perform Logging In
+        if login() == False:
+            return False
+    
+    # Go to target webpage 
+
+    page.goto(os.getenv("FORM_URL"))
+
+    time.sleep(5)
+
+    try:
+
+
+        ### !!! Problem somewhere with selecting resident after drop down menu
+        # Fill Resident
+        page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
+        page.keyboard.type('Vadym Tovkach', delay=10)  # delay helps trigger the search
+        page.wait_for_selector('.autocomplete-result-item', timeout=5000)
+        page.click('.autocomplete-result-item:first-child', force=True)
+
+        # Fill Date 
+        page.click('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]')
+        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
+
+
+        # Fill Question 1
+
+
+        # Fill Question 2
+
+
+        # Fill Question 3
+
+
+        # Frequency 
+
+
+        # Resources 
+
+
+        # Additional Resources 
+
+        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
+    except (Exception) as e:
+        print("Exception occured when filling the form! Exception: " + str(e))
+
+    return True
 
 
 ## The following code is used only for testing 
@@ -92,5 +144,13 @@ def end_session():
 if __name__ == "__main__":
     if login():
         print("✅ Session is opened.")
+
+    while True:
+        user_input = input("Test Input: ")
+        if(user_input == "break"):
+            break; 
+        else:
+            submitForm(None)
+            
 
     end_session()
