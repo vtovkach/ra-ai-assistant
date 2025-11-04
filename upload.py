@@ -16,16 +16,35 @@ browser = None
 context = None
 page = None
 
-
 def login() -> bool:
     global playwright, browser, context, page
-    playwright = sync_playwright().start()
 
-    # launch visible browser
+    playwright = sync_playwright().start()
     browser = playwright.firefox.launch(headless=False)
+
+    # If session file exists, try to reuse it
+    if os.path.exists("session.json"):
+        print("🔄 Using saved session...")
+        context = browser.new_context(storage_state="session.json")
+        page = context.new_page()
+        page.goto(os.getenv("DASH_URL"))
+
+        # Check if still logged in
+        if page.url.startswith(os.getenv("LOGIN_URL")):
+            print("⚠️ Saved session expired — re-authenticating.")
+            return fresh_login(browser)
+        else:
+            print("✅ Session still valid — user is logged in.")
+            return True
+    else:
+        return fresh_login(browser)
+
+
+def fresh_login(browser) -> bool:
+    global context, page
+
     context = browser.new_context()
     page = context.new_page()
-
     page.goto(os.getenv("LOGIN_URL"))
 
     print(">>> Please log in and complete 2FA if needed in opened browser.")
@@ -40,13 +59,34 @@ def login() -> bool:
 
     print("URL: " + page.url)
 
-    while True:
-        if page.url == os.getenv("DASH_URL") or page.url == os.getenv("FORM_URL"):
-            print("✅ Authorization confirmed — user is logged in.")
-            return True
-        else:
-            print("❌ Authorization failed — still on login page or element not found.")
-            return False
+    if page.url in (os.getenv("DASH_URL"), os.getenv("FORM_URL")):
+        print("✅ Authorization confirmed — user is logged in.")
+        # Save the session state here
+        context.storage_state(path="session.json")
+        print("💾 Session saved to session.json.")
+        return True
+    else:
+        print("❌ Authorization failed — still on login page or element not found.")
+        return False
+
+
+def close_connection():
+    global playwright, browser, context, page
+    try:
+        if context:
+            context.storage_state(path="session.json")
+            print("💾 Session saved before exit.")
+            context.close()
+        if browser:
+            browser.close()
+        if playwright:
+            playwright.stop()
+        print("👋 Connection closed cleanly.")
+    except Exception as e:
+        print(f"Error closing connection: {e}")
+    finally:
+        playwright = browser = context = page = None
+
 
 
 def end_session():
@@ -183,4 +223,4 @@ if __name__ == "__main__":
             submitForm(None)
             
 
-    end_session()
+    close_connection()
