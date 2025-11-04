@@ -103,19 +103,12 @@ def submitForm(chat : Chat) -> bool:
     try:
         # Fill Resident Name Field 
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
-<<<<<<< HEAD
-        page.keyboard.type('Vadym Tovkach', delay=10)  # delay helps trigger the search
-        page.wait_for_selector('.autocomplete-result-item', timeout=5000)
-        page.click('.autocomplete-result-item:first-child', force=True)
-
-=======
         page.keyboard.type('Vadym Tovkach', delay=50)
         time.sleep(1)
         page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=10000)
         time.sleep(1)
         page.click('.forms-subscriptions-search-result-row:first-child')
         
->>>>>>> 685e80a (Implemented automatic resident selection and automatic textfields filling.)
         # Fill Date 
         page.click('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]')
         page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
