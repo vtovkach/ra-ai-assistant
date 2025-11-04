@@ -4,10 +4,6 @@ notes/
 config/api_key
 config/questions
 __pycache__
-<<<<<<< HEAD
-.env
-=======
 .env
 log.txt
 session.json
->>>>>>> 4fc1ca8 (Added session.json file to gitignore)
