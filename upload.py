@@ -98,28 +98,35 @@ def submitForm(chat : Chat) -> bool:
 
     page.goto(os.getenv("FORM_URL"))
 
-    time.sleep(5)
+    time.sleep(2)
 
     try:
-
-
-        ### !!! Problem somewhere with selecting resident after drop down menu
-        # Fill Resident
+        # Fill Resident Name Field 
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
+<<<<<<< HEAD
         page.keyboard.type('Vadym Tovkach', delay=10)  # delay helps trigger the search
         page.wait_for_selector('.autocomplete-result-item', timeout=5000)
         page.click('.autocomplete-result-item:first-child', force=True)
 
+=======
+        page.keyboard.type('Vadym Tovkach', delay=50)
+        time.sleep(1)
+        page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=10000)
+        time.sleep(1)
+        page.click('.forms-subscriptions-search-result-row:first-child')
+        
+>>>>>>> 685e80a (Implemented automatic resident selection and automatic textfields filling.)
         # Fill Date 
         page.click('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]')
         page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
-
+        page.keyboard.press("Tab")
 
         # Fill Question 1
-
+        page.click('textarea.forms-textarea.md-textarea[aria-label="Connections and Community"]')
+        page.keyboard.type("Here is my responce for question 1. Merovingian!", delay=50)
 
         # Fill Question 2
-
+        
 
         # Fill Question 3
 
@@ -132,7 +139,6 @@ def submitForm(chat : Chat) -> bool:
 
         # Additional Resources 
 
-        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
     except (Exception) as e:
         print("Exception occured when filling the form! Exception: " + str(e))
 
@@ -147,7 +153,7 @@ if __name__ == "__main__":
 
     while True:
         user_input = input("Test Input: ")
-        if(user_input == "break"):
+        if(user_input == "exit"):
             break; 
         else:
             submitForm(None)
