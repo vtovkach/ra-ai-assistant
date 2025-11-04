@@ -6,3 +6,4 @@ config/questions
 __pycache__
 .env
 log.txt
+session.json
