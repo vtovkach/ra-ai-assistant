@@ -2,6 +2,7 @@ from enum import IntEnum
 from ai_assistant import *
 from datetime import datetime
 from typing import Self
+from upload import *
 import asyncio
 
 class ProgramField(IntEnum):
