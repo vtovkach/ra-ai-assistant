@@ -209,15 +209,15 @@ def submitForm(chat : Chat) -> bool:
         # Fill Question 1
         ##page.click('textarea.forms-textarea.md-textarea[aria-label="Connections and Community"]')
         page.keyboard.press("Tab")
-        page.keyboard.type("Here is my responce for question 1. Merovingian!", delay=50)
+        page.keyboard.type("Here is my responce for question 1. Merovingian!")
 
         # Fill Question 2
         page.keyboard.press("Tab")
-        page.keyboard.type("Here is my responce for question 2. Merovingian!", delay=50)
+        page.keyboard.type("Here is my responce for question 2. Merovingian!")
 
         # Fill Question 3
         page.keyboard.press("Tab")
-        page.keyboard.type("Here is my responce for question 3. Merovingian!", delay=50)
+        page.keyboard.type("Here is my responce for question 3. Merovingian!")
 
         # Frequency
         # Has a list of academic resources and use them as parameter to "arial-label="x"" x is academic resource
