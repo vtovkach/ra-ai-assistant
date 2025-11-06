@@ -3,9 +3,9 @@
 import os
 import asyncio
 from pathlib import Path
-from mytypes import Chat
-from mytypes import Chat
 from dotenv import load_dotenv
+from mytypes import Chat
+from upload import *
 
 # Load environment variables 
 load_dotenv()
