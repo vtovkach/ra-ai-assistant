@@ -5,6 +5,8 @@ from typing import Self
 from upload import *
 import asyncio
 
+from upload import submitForm
+
 class ProgramField(IntEnum):
     NAME = 0
     DATE = 1
