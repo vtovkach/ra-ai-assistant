@@ -50,6 +50,20 @@ def fresh_login() -> bool:
 
     """Perform a manual login and save the authenticated session.
 
+    Opens a new browser context at the login page, pauses for the user
+    to complete authentication (including possible 2FA), then verifies
+    whether login succeeded. If successful, saves cookies and localStorage
+    to `session.json` for reuse in future runs.
+
+    Args:
+        browser: The active Playwright browser instance.
+
+    Returns:
+        bool: True if login succeeded and session was saved; False otherwise.
+    """
+
+    global context, page, browser
+
     context = browser.new_context()
     page = context.new_page()
     page.goto(os.getenv("LOGIN_URL"))
@@ -78,6 +92,22 @@ def fresh_login() -> bool:
 
 
 def close_connection():
+
+    """Gracefully close all Playwright resources and persist the session state.
+
+    Saves the current browser context (cookies and localStorage) to `session.json`
+    so that future runs can restore the logged-in session. Closes the context,
+    browser, and Playwright engine in order, ensuring a clean shutdown even if
+    an exception occurs.
+
+    This function should be called at normal program exit or when an operation
+    completes successfully — not for crash recovery or forced teardown.
+
+    Exceptions:
+        Any errors during shutdown are caught and printed in order to 
+        prevent program termination.
+    """
+
     global playwright, browser, context, page
     try:
         if context:
@@ -95,8 +125,21 @@ def close_connection():
         playwright = browser = context = page = None
 
 
-
 def end_session():
+
+    """Forcefully terminate all Playwright resources and clear session data.
+
+    This function performs a complete teardown by closing the browser context,
+    browser instance, and Playwright engine. It also clears cookies to ensure
+    no session data is preserved between runs.
+
+    Unlike `close_connection()`, this function is meant for crash recovery,
+    error cleanup, or full reset scenarios where persistence is not desired.
+
+    All exceptions are logged to `log.txt` instead of being raised to prevent
+    shutdown failures from halting the program.
+    """
+
     global playwright, browser, context, page
 
     def log_error(e):
