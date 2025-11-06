@@ -177,15 +177,15 @@ def end_session():
     page = None
     print("✅ Session closed and cleaned up.")
 
+
 def submitForm(chat : Chat) -> bool:
-    if playwright == None or browser == None or context == None or page == None:
-        end_session()
+    if not all([playwright, browser, context, page]):
+        close_connection()
         # Perform Logging In
-        if login() == False:
+        if not login():
             return False
     
     # Go to target webpage 
-
     page.goto(os.getenv("FORM_URL"))
 
     time.sleep(2)
