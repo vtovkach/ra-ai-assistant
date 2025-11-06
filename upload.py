@@ -179,6 +179,22 @@ def end_session():
 
 
 def submitForm(chat : Chat) -> bool:
+
+    """
+    Fill and submit the resident interaction form using Playwright automation.
+
+    Ensures an active Playwright session, navigates to the target form,
+    and programmatically fills each field based on the provided Chat object.
+    Handles login automatically if the session is missing or expired.
+
+    Args:
+        chat (Chat): A Chat object containing resident name, date,
+                     answers, frequency, and resources to be filled.
+
+    Returns:
+        bool: True if form filling completes successfully, False if login fails.
+    """
+
     if not all([playwright, browser, context, page]):
         close_connection()
         # Perform Logging In
@@ -225,21 +241,6 @@ def submitForm(chat : Chat) -> bool:
 
     except (Exception) as e:
         print("Exception occured when filling the form! Exception: " + str(e))
+        return False
 
     return True
-
-
-## The following code is used only for testing 
-
-if __name__ == "__main__":
-    if login():
-        print("✅ Session is opened.")
-
-    while True:
-        user_input = input("Test Input: ")
-        if(user_input == "exit"):
-            break; 
-        else:
-            submitForm(None)
-            
-    close_connection()
