@@ -117,14 +117,17 @@ def submitForm(chat : Chat) -> bool:
         ### It will be loop that will click tab for each question 
 
         # Fill Question 1
-        page.click('textarea.forms-textarea.md-textarea[aria-label="Connections and Community"]')
+        ##page.click('textarea.forms-textarea.md-textarea[aria-label="Connections and Community"]')
+        page.keyboard.press("Tab")
         page.keyboard.type("Here is my responce for question 1. Merovingian!", delay=50)
 
         # Fill Question 2
-        
+        page.keyboard.press("Tab")
+        page.keyboard.type("Here is my responce for question 2. Merovingian!", delay=50)
 
         # Fill Question 3
-
+        page.keyboard.press("Tab")
+        page.keyboard.type("Here is my responce for question 3. Merovingian!", delay=50)
 
         # Frequency 
 
