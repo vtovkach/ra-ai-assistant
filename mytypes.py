@@ -187,11 +187,10 @@ class Chat:
             # Save Notes
             for note in self.notes:
                 f.write("**" + note)
-            f.write("\n")
 
             # Save Answers
             for answer in self.answers:
-                f.write("*" + answer + "\n")
+                f.write("*" + answer)
                 
         # Delete old file and rename the temp.txt 
         if os.path.exists(self.filepath):
