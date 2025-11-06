@@ -213,6 +213,9 @@ def submitForm(chat : Chat) -> bool:
 
         ## Select Resources 
         for res in chat.resources:
+            if res == "N/A":
+                page.click('[aria-label="No resources were discussed during this chat"]')
+                continue
             page.click(f'[aria-label="{res}"]')
         
         # Additional Resources 
@@ -239,5 +242,4 @@ if __name__ == "__main__":
         else:
             submitForm(None)
             
-
     close_connection()
