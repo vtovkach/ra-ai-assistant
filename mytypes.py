@@ -152,6 +152,7 @@ class Chat:
 
     def submitChat(self) -> None:
         print(f"Submitting chat with resident {self.name}.")
+        submitForm(self)
         
     def saveChat(self) -> None:
 
