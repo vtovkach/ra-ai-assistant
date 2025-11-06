@@ -190,67 +190,34 @@ def submitForm(chat : Chat) -> bool:
     time.sleep(1.5)
 
     try:
-        ## Fill Resident Name Field 
+        ## Fill Resident's Name Field 
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
-        page.keyboard.type('Vadym Tovkach', delay=50)
+        page.keyboard.type(chat.name)
         time.sleep(1.5)
-        page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=10000)
+        page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=5000)
         time.sleep(1)
         page.click('.forms-subscriptions-search-result-row:first-child')
         
         ## Fill Date 
-        #page.click('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]')
         page.keyboard.press("Tab")
-        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
+        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', chat.date)
 
-        ### It will be loop that will click tab for each question 
+        ## Type the answers for every question
+        for ans in chat.answers:
+            page.keyboard.press("Tab")
+            page.keyboard.type(ans)
 
-        # Fill Question 1
-        ##page.click('textarea.forms-textarea.md-textarea[aria-label="Connections and Community"]')
-        page.keyboard.press("Tab")
-        page.keyboard.type("Here is my responce for question 1. Merovingian!")
+        ## Select frequency 
+        page.click(f'[aria-label="{chat.frequency}"]')
 
-        # Fill Question 2
-        page.keyboard.press("Tab")
-        page.keyboard.type("Here is my responce for question 2. Merovingian!")
-
-        # Fill Question 3
-        page.keyboard.press("Tab")
-        page.keyboard.type("Here is my responce for question 3. Merovingian!")
-
-        # Frequency
-        # Has a list of academic resources and use them as parameter to "arial-label="x"" x is academic resource
-        #
-        frequencies = ["Frequency: Daily", 
-                       "Frequency: Weekly", 
-                       "Frequency: Monthly", 
-                       "Frequency: Rarely", 
-                       "Ghost Resident"
-                       ]
-
-        for freq in frequencies:
-            page.click(f'[aria-label="{freq}"]')
-
-        # Resources 
-        resources = ["Academic Advisor",
-                    "Bobcat Bounty",
-                    "Career Services",
-                    "Counseling Center",
-                    "Disability Services",
-                    "Referral to LLC Staff",
-                    "Residence Director",
-                    "Student Health Center",
-                    "Student Learning Assistance Center",
-                    "No resources were discussed during this chat",
-                    "OTHER - please elaborate in next questions"
-                    ]
-        
-        for res in resources:
+        ## Select Resources 
+        for res in chat.resources:
             page.click(f'[aria-label="{res}"]')
         
         # Additional Resources 
         page.click('[aria-label="Enter text for If you selected OTHER on the Resources question above, please elaborate."]')
-        page.keyboard.type("Here is additional resources I talked about!")
+        page.keyboard.type(chat.additionalResources)
+        page.keyboard.press("Tab")
 
     except (Exception) as e:
         print("Exception occured when filling the form! Exception: " + str(e))
