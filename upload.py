@@ -39,16 +39,16 @@ def login() -> bool:
         # Check if still logged in
         if page.url.startswith(os.getenv("LOGIN_URL")):
             print("⚠️ Saved session expired — re-authenticating.")
-            return fresh_login(browser)
+            return fresh_login()
         else:
             print("✅ Session still valid — user is logged in.")
             return True
     else:
-        return fresh_login(browser)
+        return fresh_login()
 
+def fresh_login() -> bool:
 
-def fresh_login(browser) -> bool:
-    global context, page
+    """Perform a manual login and save the authenticated session.
 
     context = browser.new_context()
     page = context.new_page()
