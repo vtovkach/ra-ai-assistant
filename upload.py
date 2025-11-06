@@ -18,7 +18,8 @@ page = None
 
 def login() -> bool:
 
-    """Authenticate user and save session if successful.
+    """
+    Authenticate user and save session if successful.
 
     Returns:
         bool: True if login succeeded or session reused, False otherwise.
@@ -48,7 +49,8 @@ def login() -> bool:
 
 def fresh_login() -> bool:
 
-    """Perform a manual login and save the authenticated session.
+    """
+    Perform a manual login and save the authenticated session.
 
     Opens a new browser context at the login page, pauses for the user
     to complete authentication (including possible 2FA), then verifies
@@ -93,7 +95,8 @@ def fresh_login() -> bool:
 
 def close_connection():
 
-    """Gracefully close all Playwright resources and persist the session state.
+    """
+    Gracefully close all Playwright resources and persist the session state.
 
     Saves the current browser context (cookies and localStorage) to `session.json`
     so that future runs can restore the logged-in session. Closes the context,
@@ -127,7 +130,8 @@ def close_connection():
 
 def end_session():
 
-    """Forcefully terminate all Playwright resources and clear session data.
+    """ 
+    Forcefully terminate all Playwright resources and clear session data.
 
     This function performs a complete teardown by closing the browser context,
     browser instance, and Playwright engine. It also clears cookies to ensure
