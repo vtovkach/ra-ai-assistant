@@ -50,6 +50,7 @@ def main():
         if userInput[0] == "exit":
             # Save all chats before exiting 
             saveChats(["all"])
+            close_connection() # Close browser session, if opened
             break
 
         if userInput[0] == "status":
