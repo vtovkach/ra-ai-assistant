@@ -101,7 +101,7 @@ def submitForm(chat : Chat) -> bool:
     time.sleep(2)
 
     try:
-        # Fill Resident Name Field 
+        ## Fill Resident Name Field 
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
         page.keyboard.type('Vadym Tovkach', delay=50)
         time.sleep(1)
@@ -109,10 +109,12 @@ def submitForm(chat : Chat) -> bool:
         time.sleep(1)
         page.click('.forms-subscriptions-search-result-row:first-child')
         
-        # Fill Date 
-        page.click('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]')
-        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
+        ## Fill Date 
+        #page.click('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]')
         page.keyboard.press("Tab")
+        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', '11/03/2025')
+
+        ### It will be loop that will click tab for each question 
 
         # Fill Question 1
         page.click('textarea.forms-textarea.md-textarea[aria-label="Connections and Community"]')
