@@ -158,7 +158,8 @@ class Chat:
         
     def saveChat(self) -> None:
 
-        ### Structure of the file 
+        '''
+        Structure of the file 
         # Line 1: Resident Name
         # Line 2: Date when the conversation happened 
         # Line 3: Frequency
@@ -168,6 +169,7 @@ class Chat:
         # Line 7: Is processed 
         # Line 8 to Line n: **Notes
         # Line n + 1 to Line k: *Answers  
+        '''
 
         with open("notes/temp.txt", "w", encoding="utf-8") as f:
 
