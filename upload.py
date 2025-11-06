@@ -187,13 +187,13 @@ def submitForm(chat : Chat) -> bool:
     # Go to target webpage 
     page.goto(os.getenv("FORM_URL"))
 
-    time.sleep(2)
+    time.sleep(1.5)
 
     try:
         ## Fill Resident Name Field 
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
         page.keyboard.type('Vadym Tovkach', delay=50)
-        time.sleep(1)
+        time.sleep(1.5)
         page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=10000)
         time.sleep(1)
         page.click('.forms-subscriptions-search-result-row:first-child')
