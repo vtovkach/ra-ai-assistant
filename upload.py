@@ -129,13 +129,39 @@ def submitForm(chat : Chat) -> bool:
         page.keyboard.press("Tab")
         page.keyboard.type("Here is my responce for question 3. Merovingian!", delay=50)
 
-        # Frequency 
+        # Frequency
+        # Has a list of academic resources and use them as parameter to "arial-label="x"" x is academic resource
+        #
+        frequencies = ["Frequency: Daily", 
+                       "Frequency: Weekly", 
+                       "Frequency: Monthly", 
+                       "Frequency: Rarely", 
+                       "Ghost Resident"
+                       ]
 
+        for freq in frequencies:
+            page.click(f'[aria-label="{freq}"]')
 
         # Resources 
-
-
+        resources = ["Academic Advisor",
+                    "Bobcat Bounty",
+                    "Career Services",
+                    "Counseling Center",
+                    "Disability Services",
+                    "Referral to LLC Staff",
+                    "Residence Director",
+                    "Student Health Center",
+                    "Student Learning Assistance Center",
+                    "No resources were discussed during this chat",
+                    "OTHER - please elaborate in next questions"
+                    ]
+        
+        for res in resources:
+            page.click(f'[aria-label="{res}"]')
+        
         # Additional Resources 
+        page.click('[aria-label="Enter text for If you selected OTHER on the Resources question above, please elaborate."]')
+        page.keyboard.type("Here is additional resources I talked about!")
 
     except (Exception) as e:
         print("Exception occured when filling the form! Exception: " + str(e))
