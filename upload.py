@@ -17,6 +17,13 @@ context = None
 page = None
 
 def login() -> bool:
+
+    """Authenticate user and save session if successful.
+
+    Returns:
+        bool: True if login succeeded or session reused, False otherwise.
+    """
+
     global playwright, browser, context, page
 
     playwright = sync_playwright().start()
