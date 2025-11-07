@@ -184,14 +184,14 @@ class Chat:
             f.write(str(self.isSubmitted) + "\n")
             f.write(str(self.isProcessed) + "\n")
 
-            # Save Notes
+            # Write notes
             for note in self.notes:
-                f.write("**" + note)
-
+                f.write(f"**{note.strip()}\n")
+            
             # Save Answers
             for answer in self.answers:
-                f.write("*" + answer)
-                
+                f.write(f"*{answer.strip()}\n")
+
         # Delete old file and rename the temp.txt 
         if os.path.exists(self.filepath):
             os.remove(self.filepath)
