@@ -28,8 +28,8 @@ def getAnswer(question: str, userNote: str, name: str) -> str:
                     "Do not use colons, dashes, en dashes, or em dashes. "
                     f"Occasionally use the resident’s name instead of pronouns. The resident’s name is {name}. "
                     "Do not make up any information. "
-                    "Focus mainly on what is written in the notes rather than the question itself, and keep the tone plain and simple. The whole answer should be no longer "
-                    "than 4 sentences." 
+                    "Focus mainly on what is written in the notes rather than the question itself, and keep the tone plain and simple."
+                    "The whole answer should be no longer than 4 sentences and everything is places in a single paragraph." 
                 )
             },
             {"role": "user", "content": userNote}
