@@ -142,6 +142,7 @@ def end_session():
 
     All exceptions are logged to `log.txt` instead of being raised to prevent
     shutdown failures from halting the program.
+    
     """
 
     global playwright, browser, context, page
@@ -193,7 +194,7 @@ def submitForm(chat: Chat) -> bool:
     Returns:
         bool: True if the form submission completes successfully, False otherwise.
     """
-    
+
     if not all([playwright, browser, context, page]):
         close_connection()
         if not login():
