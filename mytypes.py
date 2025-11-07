@@ -153,8 +153,17 @@ class Chat:
         return self, True
 
     def submitChat(self) -> None:
-        print(f"Submitting chat with resident {self.name}.")
-        submitForm(self)
+
+        """
+        Submit the chat form and print the result.
+        """
+
+        print(f"Submitting chat for resident: {self.name}...")
+
+        if submitForm(self):
+            print(f"Chat with resident {self.name} was submitted successfully ✅")
+        else:
+            print(f"Failed to submit chat with resident {self.name} ❌")
         
     def saveChat(self) -> None:
 
