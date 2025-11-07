@@ -16,6 +16,10 @@ browser = None
 context = None
 page = None
 
+def log_error(e):
+    with open("log.txt", "a", encoding="utf-8") as f:
+        f.write(f"[{datetime.datetime.now()}] {repr(e)}\n")
+
 def login() -> bool:
 
     """Authenticate user and save session if successful.
@@ -142,10 +146,6 @@ def end_session():
 
     global playwright, browser, context, page
 
-    def log_error(e):
-        with open("log.txt", "a", encoding="utf-8") as f:
-            f.write(f"[{datetime.datetime.now()}] {repr(e)}\n")
-
     # Close context
     try:
         if context:
@@ -178,7 +178,7 @@ def end_session():
     print("✅ Session closed and cleaned up.")
 
 
-def submitForm(chat : Chat) -> bool:
+def submitForm(chat: Chat) -> bool:
 
     """
     Fill and submit the resident interaction form using Playwright automation.
@@ -188,59 +188,80 @@ def submitForm(chat : Chat) -> bool:
     Handles login automatically if the session is missing or expired.
 
     Args:
-        chat (Chat): A Chat object containing resident name, date,
-                     answers, frequency, and resources to be filled.
+        chat (Chat): Contains resident name, date, answers, frequency, and resources.
 
     Returns:
-        bool: True if form filling completes successfully, False if login fails.
+        bool: True if the form submission completes successfully, False otherwise.
     """
-
+    
     if not all([playwright, browser, context, page]):
         close_connection()
-        # Perform Logging In
         if not login():
             return False
-    
-    # Go to target webpage 
+
+    # Navigate to the form
     page.goto(os.getenv("FORM_URL"))
+    time.sleep(1)
 
-    time.sleep(1.5)
-
+    # Resident name
     try:
-        ## Fill Resident's Name Field 
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
         page.keyboard.type(chat.name)
-        time.sleep(1.5)
         page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=5000)
-        time.sleep(1)
         page.click('.forms-subscriptions-search-result-row:first-child')
-        
-        ## Fill Date 
+    except Exception as e:
+        log_error(f"Error selecting resident's name: {e}")
+        return False
+
+    # Date
+    try:
         page.keyboard.press("Tab")
         page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', chat.date)
+    except Exception as e:
+        log_error(f"Error selecting date: {e}")
+        return False
 
-        ## Type the answers for every question
+    # Answers
+    try:
         for ans in chat.answers:
             page.keyboard.press("Tab")
             page.keyboard.type(ans)
+    except Exception as e:
+        log_error(f"Error filling answers: {e}")
+        return False
 
-        ## Select frequency 
+    # Frequency
+    try:
         page.click(f'[aria-label="{chat.frequency}"]')
+    except Exception as e:
+        log_error(f"Error selecting frequency: {e}")
+        return False
 
-        ## Select Resources 
+    # Resources
+    try:
         for res in chat.resources:
             if res == "N/A":
                 page.click('[aria-label="No resources were discussed during this chat"]')
-                continue
-            page.click(f'[aria-label="{res}"]')
-        
-        # Additional Resources 
+            else:
+                page.click(f'[aria-label="{res}"]')
+    except Exception as e:
+        log_error(f"Error selecting resources: {e}")
+        return False
+
+    # Additional resources
+    try:
         page.click('[aria-label="Enter text for If you selected OTHER on the Resources question above, please elaborate."]')
         page.keyboard.type(chat.additionalResources)
         page.keyboard.press("Tab")
+    except Exception as e:
+        log_error(f"Error filling additional resources: {e}")
+        return False
 
-    except (Exception) as e:
-        print("Exception occured when filling the form! Exception: " + str(e))
+    # Submit
+    try:
+        page.click('button[title="Click to submit form"]')
+    except Exception as e:
+        log_error(f"Error clicking submit button: {e}")
         return False
 
     return True
