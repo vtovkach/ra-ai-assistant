@@ -4,8 +4,8 @@ import os
 import datetime
 from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
-from mytypes import Chat
 import time 
+from mytypes import *
 
 # Load environment variables 
 load_dotenv()
@@ -15,6 +15,10 @@ playwright = None
 browser = None
 context = None
 page = None
+
+def log_error(e):
+    with open("log.txt", "a", encoding="utf-8") as f:
+        f.write(f"[{datetime.datetime.now()}] {repr(e)}\n")
 
 def login() -> bool:
 
@@ -142,13 +146,10 @@ def end_session():
 
     All exceptions are logged to `log.txt` instead of being raised to prevent
     shutdown failures from halting the program.
+    
     """
 
     global playwright, browser, context, page
-
-    def log_error(e):
-        with open("log.txt", "a", encoding="utf-8") as f:
-            f.write(f"[{datetime.datetime.now()}] {repr(e)}\n")
 
     # Close context
     try:
@@ -182,11 +183,93 @@ def end_session():
     print("✅ Session closed and cleaned up.")
 
 
-def submitForm(chat : Chat) -> bool:
+def submitForm(chat: Chat) -> bool:
 
-    # TODO:
-    
-    pass
+    """
+    Fill and submit the resident interaction form using Playwright automation.
+
+    Ensures an active Playwright session, navigates to the target form,
+    and programmatically fills each field based on the provided Chat object.
+    Handles login automatically if the session is missing or expired.
+
+    Args:
+        chat (Chat): Contains resident name, date, answers, frequency, and resources.
+
+    Returns:
+        bool: True if the form submission completes successfully, False otherwise.
+    """
+
+    if not all([playwright, browser, context, page]):
+        close_connection()
+        if not login():
+            return False
+
+    # Navigate to the form
+    page.goto(os.getenv("FORM_URL"))
+    time.sleep(1)
+
+    # Resident name
+    try:
+        page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
+        page.keyboard.type(chat.name)
+        page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=5000)
+        page.click('.forms-subscriptions-search-result-row:first-child')
+    except Exception as e:
+        log_error(f"Error selecting resident's name: {e}")
+        return False
+
+    # Date
+    try:
+        page.keyboard.press("Tab")
+        page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', chat.date)
+    except Exception as e:
+        log_error(f"Error selecting date: {e}")
+        return False
+
+    # Answers
+    try:
+        for ans in chat.answers:
+            page.keyboard.press("Tab")
+            page.keyboard.type(ans)
+    except Exception as e:
+        log_error(f"Error filling answers: {e}")
+        return False
+
+    # Frequency
+    try:
+        page.click(f'[aria-label="{chat.frequency}"]')
+    except Exception as e:
+        log_error(f"Error selecting frequency: {e}")
+        return False
+
+    # Resources
+    try:
+        for res in chat.resources:
+            if res == "N/A":
+                page.click('[aria-label="No resources were discussed during this chat"]')
+            else:
+                page.click(f'[aria-label="{res}"]')
+    except Exception as e:
+        log_error(f"Error selecting resources: {e}")
+        return False
+
+    # Additional resources
+    try:
+        page.click('[aria-label="Enter text for If you selected OTHER on the Resources question above, please elaborate."]')
+        page.keyboard.type(chat.additionalResources)
+        page.keyboard.press("Tab")
+    except Exception as e:
+        log_error(f"Error filling additional resources: {e}")
+        return False
+
+    # Submit
+    try:
+        page.click('button[title="Click to submit form"]')
+    except Exception as e:
+        log_error(f"Error clicking submit button: {e}")
+        return False
+
+    return True
 
 
 ## The following code is used only for testing 

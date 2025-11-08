@@ -3,9 +3,9 @@
 import os
 import asyncio
 from pathlib import Path
-from mytypes import Chat
-from mytypes import Chat
 from dotenv import load_dotenv
+from mytypes import Chat
+from upload import *
 
 # Load environment variables 
 load_dotenv()
@@ -50,6 +50,7 @@ def main():
         if userInput[0] == "exit":
             # Save all chats before exiting 
             saveChats(["all"])
+            close_connection() # Close browser session, if opened
             break
 
         if userInput[0] == "status":
