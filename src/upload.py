@@ -6,6 +6,7 @@ from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
 import time 
 from mytypes import *
+from exceptions.FormExceptions import *
 
 # Load environment variables 
 load_dotenv()
@@ -17,7 +18,7 @@ context = None
 page = None
 
 def log_error(e):
-    with open("log.txt", "a", encoding="utf-8") as f:
+    with open("logs/log.txt", "a", encoding="utf-8") as f:
         f.write(f"[{datetime.datetime.now()}] {repr(e)}\n")
 
 def login() -> bool:
@@ -35,9 +36,9 @@ def login() -> bool:
     browser = playwright.firefox.launch(headless=False)
 
     # If session file exists, try to reuse it
-    if os.path.exists("session.json"):
+    if os.path.exists("session/session.json"):
         print("🔄 Using saved session...")
-        context = browser.new_context(storage_state="session.json")
+        context = browser.new_context(storage_state="session/session.json")
         page = context.new_page()
         page.goto(os.getenv("DASH_URL"))
 
@@ -89,7 +90,7 @@ def fresh_login() -> bool:
     if page.url in (os.getenv("DASH_URL"), os.getenv("FORM_URL")):
         print("✅ Authorization confirmed — user is logged in.")
         # Save the session state here
-        context.storage_state(path="session.json")
+        context.storage_state(path="session/session.json")
         print("💾 Session saved to session.json.")
         return True
     else:
@@ -118,7 +119,7 @@ def close_connection():
     global playwright, browser, context, page
     try:
         if context:
-            context.storage_state(path="session.json")
+            context.storage_state(path="session/session.json")
             print("💾 Session saved before exit.")
             context.close()
         if browser:
@@ -199,24 +200,30 @@ def submitForm(chat: Chat) -> bool:
         bool: True if the form submission completes successfully, False otherwise.
     """
 
-    if not all([playwright, browser, context, page]):
-        close_connection()
-        if not login():
-            return False
+    if not login():
+        end_session()
+        raise FormFail("Failed to login.")
 
     # Navigate to the form
     page.goto(os.getenv("FORM_URL"))
-    time.sleep(1)
+    time.sleep(2)
+
+    if page.url != os.getenv("FORM_URL"):
+        log_error(f"Failed to open form page.")
+        close_connection()
+        raise FormFail("Failed to open form page.")
 
     # Resident name
     try:
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
         page.keyboard.type(chat.name)
         page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=5000)
+        time.sleep(2.5)
         page.click('.forms-subscriptions-search-result-row:first-child')
     except Exception as e:
         log_error(f"Error selecting resident's name: {e}")
-        return False
+        close_connection()
+        raise FormFail("Failed to select resident from the list.")
 
     # Date
     try:
@@ -224,8 +231,9 @@ def submitForm(chat: Chat) -> bool:
         page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', chat.date)
     except Exception as e:
         log_error(f"Error selecting date: {e}")
-        return False
-
+        close_connection()
+        raise FormFail("Failed to input the date.")
+    
     # Answers
     try:
         for ans in chat.answers:
@@ -233,14 +241,16 @@ def submitForm(chat: Chat) -> bool:
             page.keyboard.type(ans)
     except Exception as e:
         log_error(f"Error filling answers: {e}")
-        return False
+        close_connection()
+        raise FormFail("Failed to input answers.")
 
     # Frequency
     try:
         page.click(f'[aria-label="{chat.frequency}"]')
     except Exception as e:
         log_error(f"Error selecting frequency: {e}")
-        return False
+        close_connection()
+        raise FormFail("Failed to select frequency.")
 
     # Resources
     try:
@@ -251,8 +261,9 @@ def submitForm(chat: Chat) -> bool:
                 page.click(f'[aria-label="{res}"]')
     except Exception as e:
         log_error(f"Error selecting resources: {e}")
-        return False
-
+        close_connection()
+        raise FormFail("Failed to select resources.")
+        
     # Additional resources
     try:
         page.click('[aria-label="Enter text for If you selected OTHER on the Resources question above, please elaborate."]')
@@ -260,30 +271,23 @@ def submitForm(chat: Chat) -> bool:
         page.keyboard.press("Tab")
     except Exception as e:
         log_error(f"Error filling additional resources: {e}")
-        return False
-
+        close_connection()
+        raise FormFail("Failed to input additional resources.") 
+    
     # Submit
     try:
         page.click('button[title="Click to submit form"]')
     except Exception as e:
         log_error(f"Error clicking submit button: {e}")
-        return False
+        close_connection()
+        raise FormFail("Failed to submit form.")
+    
+    # Wait and check if new submission page is loaded, if not raise an exception 
+    time.sleep(2)
+    if page.url == os.getenv("FORM_URL"):
+        close_connection()
+        raise FormFail("Failed to submit form. Not all inputs fields were answered.")
+    
+    close_connection()
 
     return True
-
-
-## The following code is used only for testing 
-
-if __name__ == "__main__":
-    if login():
-        print("✅ Session is opened.")
-
-    while True:
-        user_input = input("Test Input: ")
-        if(user_input == "exit"):
-            break; 
-        else:
-            submitForm(None)
-            
-
-    close_connection()

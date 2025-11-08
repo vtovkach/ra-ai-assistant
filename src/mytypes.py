@@ -1,9 +1,10 @@
 from enum import IntEnum
 from ai_assistant import *
-from datetime import datetime
+import datetime
 from upload import *
 from typing import Self
 import asyncio
+from exceptions.FormExceptions import *
 
 from upload import submitForm
 
@@ -143,7 +144,7 @@ class Chat:
                 answer = await asyncio.to_thread(getAnswer, q, self.notes[i], self.name)
                 self.answers.append(answer)
             except Exception as e:
-                with open("log.txt", "a") as f:
+                with open("logs/log.txt", "a") as f:
                     f.write(f"[{datetime.now()}] {str(e)}\n")
                 return self, False
                 
@@ -157,14 +158,24 @@ class Chat:
         """
         Submit the chat form and print the result.
         """
+        
+        if self.isSubmitted:
+            print(f"Chat with resident {self.name} is already submitted!")
+            return
 
+        if self.isProcessed == False:
+            print(f"Chat with resident {self.name} is not processed. Submission aborted.")
+            return
+        
         print(f"Submitting chat for resident: {self.name}...")
 
-        if submitForm(self):
+        try:
+            submitForm(self)
             print(f"Chat with resident {self.name} was submitted successfully ✅")
-        else:
-            print(f"Failed to submit chat with resident {self.name} ❌")
-        
+            self.isSubmitted = True
+        except Exception as e:
+            print(f"{str(e)} Failed to submit chat with resident {self.name} ❌")
+
     def saveChat(self) -> None:
 
         '''
