@@ -1,9 +1,10 @@
 from enum import IntEnum
 from ai_assistant import *
-from datetime import datetime
+import datetime
 from upload import *
 from typing import Self
 import asyncio
+from exceptions.FormExceptions import *
 
 from upload import submitForm
 
@@ -157,14 +158,19 @@ class Chat:
         """
         Submit the chat form and print the result.
         """
+        
+        if self.isSubmitted:
+            print(f"Chat with resident {self.name} is already submitted!")
 
         print(f"Submitting chat for resident: {self.name}...")
 
-        if submitForm(self):
+        try:
+            submitForm(self)
             print(f"Chat with resident {self.name} was submitted successfully ✅")
-        else:
-            print(f"Failed to submit chat with resident {self.name} ❌")
-        
+            self.isSubmitted = True
+        except Exception as e:
+            print(f"{str(e)} Failed to submit chat with resident {self.name} ❌")
+
     def saveChat(self) -> None:
 
         '''
