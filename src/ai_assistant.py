@@ -1,7 +1,8 @@
 # This source file will contain logic to generate answers to questions based on the provided notes 
 
-from openai import OpenAI
+from openai import OpenAI, APIError, RateLimitError, AuthenticationError
 import os 
+from exceptions.OpenAiExceptions import *
 
 # OpenAi Client 
 _client = None
