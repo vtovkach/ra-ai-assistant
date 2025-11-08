@@ -32,12 +32,13 @@ def getAnswer(question: str, userNote: str, name: str) -> str:
                         f"You are asked to turn the provided notes into a clear and complete answer to the following question: {question}. "
                         "Write as a Resident Assistant reflecting on your conversations with residents. "
                         "Use simple, natural language, as if you are personally describing what you know about the resident. "
-                        "Keep your response straightforward and thoughtful—avoid exaggeration or unnecessary complexity. "
+                        "Keep your response straightforward and use simple English structures and language."
                         "Do not use colons, dashes, en dashes, or em dashes. "
-                        f"Occasionally use the resident’s name instead of pronouns. The resident’s name is {name}. "
-                        "Do not make up any information. "
-                        "Focus mainly on what is written in the notes rather than the question itself, and keep the tone plain and simple."
-                        "The whole answer should be no longer than 4 sentences and everything is places in a single paragraph." 
+                        f"Occasionally use the resident’s first name instead of pronouns. The resident’s name is {name.split(" ")[0]}. "
+                        "Don't invent any information about resident. Use only provided information. If it says resident could not answer question, " 
+                        "state that in the answer. Never, NEVER invent anything."
+                        "Focus mainly on what is written in the notes rather than the question itself, and use simple English language."
+                        "The whole answer should be short, no longer than 3 sentences and everything is placed in a single paragraph." 
                     )
                 },
                 {"role": "user", "content": userNote}
