@@ -8,3 +8,4 @@ class LoginFail(Exception):
     
     def __str__(self):
         return f"[Runtime Exception] {self.value}"
+    
