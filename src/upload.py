@@ -204,7 +204,7 @@ def submitForm(chat: Chat) -> bool:
         close_connection()
         if not login():
             end_session()
-            raise LoginFail("Logging in has failed. Form was not submitted.")
+            raise FormFail("Failed to login.")
 
     # Navigate to the form
     page.goto(os.getenv("FORM_URL"))
@@ -219,7 +219,7 @@ def submitForm(chat: Chat) -> bool:
         page.click('.forms-subscriptions-search-result-row:first-child')
     except Exception as e:
         log_error(f"Error selecting resident's name: {e}")
-        return False
+        raise FormFail("Failed to select resident from the list.")
 
     # Date
     try:
@@ -227,8 +227,8 @@ def submitForm(chat: Chat) -> bool:
         page.fill('input.elm-datepicker--input[aria-label="Enter date for Date of Interaction"]', chat.date)
     except Exception as e:
         log_error(f"Error selecting date: {e}")
-        return False
-
+        raise FormFail("Failed to input the date.")
+    
     # Answers
     try:
         for ans in chat.answers:
@@ -236,14 +236,14 @@ def submitForm(chat: Chat) -> bool:
             page.keyboard.type(ans)
     except Exception as e:
         log_error(f"Error filling answers: {e}")
-        return False
+        raise FormFail("Failed to input answers.")
 
     # Frequency
     try:
         page.click(f'[aria-label="{chat.frequency}"]')
     except Exception as e:
         log_error(f"Error selecting frequency: {e}")
-        return False
+        FormFail("Failed to select frequency.")
 
     # Resources
     try:
@@ -254,8 +254,8 @@ def submitForm(chat: Chat) -> bool:
                 page.click(f'[aria-label="{res}"]')
     except Exception as e:
         log_error(f"Error selecting resources: {e}")
-        return False
-
+        raise FormFail("Failed to select resources.")
+        
     # Additional resources
     try:
         page.click('[aria-label="Enter text for If you selected OTHER on the Resources question above, please elaborate."]')
@@ -263,7 +263,7 @@ def submitForm(chat: Chat) -> bool:
         page.keyboard.press("Tab")
     except Exception as e:
         log_error(f"Error filling additional resources: {e}")
-        return False
+        raise FormFail("Failed to input additional resources.") 
 
     '''''
     # Submit
@@ -271,9 +271,9 @@ def submitForm(chat: Chat) -> bool:
         page.click('button[title="Click to submit form"]')
     except Exception as e:
         log_error(f"Error clicking submit button: {e}")
-        return False
+        return False ## throw an exception here later  
     '''''
-    
+
     return True
 
 
