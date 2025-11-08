@@ -278,15 +278,17 @@ def submitForm(chat: Chat) -> bool:
 ## The following code is used only for testing 
 
 if __name__ == "__main__":
-    if login():
+    loginStatus = login()
+    
+    if loginStatus:
         print("✅ Session is opened.")
-
-    while True:
+    
+    while loginStatus:
         user_input = input("Test Input: ")
         if(user_input == "exit"):
             break; 
         else:
             submitForm(None)
-            
-
-    close_connection()
+    
+    if loginStatus:
+        close_connection()
