@@ -210,6 +210,10 @@ def submitForm(chat: Chat) -> bool:
     page.goto(os.getenv("FORM_URL"))
     time.sleep(2)
 
+    if page.url != os.getenv("FORM_URL"):
+        log_error(f"Failed to open form page.")
+        raise FormFail("Failed to open form page.")
+
     # Resident name
     try:
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
