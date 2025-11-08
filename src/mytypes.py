@@ -4,6 +4,7 @@ import datetime
 from upload import *
 from typing import Self
 import asyncio
+from exceptions.LoginFail import LoginFail
 
 from upload import submitForm
 
@@ -163,12 +164,14 @@ class Chat:
 
         print(f"Submitting chat for resident: {self.name}...")
 
-        if submitForm(self):
+        try:
+            submitForm(self)
             print(f"Chat with resident {self.name} was submitted successfully ✅")
             self.isSubmitted = True
-        else:
-            print(f"Failed to submit chat with resident {self.name} ❌")
-        
+        except LoginFail as e:
+            print(f"{str(e)} Failed to submit chat with resident {self.name} ❌")
+
+
     def saveChat(self) -> None:
 
         '''
