@@ -1,6 +1,5 @@
 
-
-class LoginFail(Exception):
+class FormFail(Exception):
     def __init__(self, value, code =None):
         self.value = value
         self.code = code 
@@ -8,4 +7,3 @@ class LoginFail(Exception):
     
     def __str__(self):
         return f"[Runtime Exception] {self.value}"
-    
