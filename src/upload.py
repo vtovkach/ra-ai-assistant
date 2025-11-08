@@ -35,7 +35,7 @@ def login() -> bool:
     browser = playwright.firefox.launch(headless=False)
 
     # If session file exists, try to reuse it
-    if os.path.exists("../session/session.json"):
+    if os.path.exists("session/session.json"):
         print("🔄 Using saved session...")
         context = browser.new_context(storage_state="session/session.json")
         page = context.new_page()
@@ -89,7 +89,7 @@ def fresh_login() -> bool:
     if page.url in (os.getenv("DASH_URL"), os.getenv("FORM_URL")):
         print("✅ Authorization confirmed — user is logged in.")
         # Save the session state here
-        context.storage_state(path="../session/session.json")
+        context.storage_state(path="session/session.json")
         print("💾 Session saved to session.json.")
         return True
     else:
@@ -118,7 +118,7 @@ def close_connection():
     global playwright, browser, context, page
     try:
         if context:
-            context.storage_state(path="../session/session.json")
+            context.storage_state(path="session/session.json")
             print("💾 Session saved before exit.")
             context.close()
         if browser:
