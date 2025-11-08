@@ -4,7 +4,7 @@ import datetime
 from upload import *
 from typing import Self
 import asyncio
-from exceptions.exceptions import *
+from exceptions.FormExceptions import *
 
 from upload import submitForm
 
@@ -170,7 +170,7 @@ class Chat:
             self.isSubmitted = True
         except Exception as e:
             print(f"{str(e)} Failed to submit chat with resident {self.name} ❌")
-            
+
     def saveChat(self) -> None:
 
         '''
