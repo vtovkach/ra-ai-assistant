@@ -4,7 +4,7 @@ import datetime
 from upload import *
 from typing import Self
 import asyncio
-from exceptions.LoginFail import LoginFail
+from exceptions.exceptions import *
 
 from upload import submitForm
 

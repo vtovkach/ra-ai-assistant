@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
 import time 
 from mytypes import *
-from exceptions.LoginFail import LoginFail
+from exceptions.exceptions import *
 
 # Load environment variables 
 load_dotenv()
