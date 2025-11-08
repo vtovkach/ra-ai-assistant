@@ -269,6 +269,8 @@ def submitForm(chat: Chat) -> bool:
         log_error(f"Error filling additional resources: {e}")
         raise FormFail("Failed to input additional resources.") 
 
+    
+    '''''
     # Submit
     try:
         page.click('button[title="Click to submit form"]')
@@ -280,6 +282,7 @@ def submitForm(chat: Chat) -> bool:
     time.sleep(2)
     if page.url == os.getenv("FORM_URL"):
         raise FormFail("Failed to submit form. Not all inputs fields were answered.")
+    '''''
 
     return True
 
