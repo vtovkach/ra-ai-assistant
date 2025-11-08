@@ -275,6 +275,11 @@ def submitForm(chat: Chat) -> bool:
     except Exception as e:
         log_error(f"Error clicking submit button: {e}")
         raise FormFail("Failed to submit form.")
+    
+    # Wait and check if new submission page is loaded, if not raise an exception 
+    time.sleep(2)
+    if page.url == os.getenv("FORM_URL"):
+        raise FormFail("Failed to submit form. Not all inputs fields were answered.")
 
     return True
 
