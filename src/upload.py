@@ -6,6 +6,7 @@ from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
 import time 
 from mytypes import *
+from exceptions.LoginFail import LoginFail
 
 # Load environment variables 
 load_dotenv()
@@ -202,7 +203,7 @@ def submitForm(chat: Chat) -> bool:
     if not all([playwright, browser, context, page]):
         close_connection()
         if not login():
-            return False
+            raise LoginFail("Logging in has failed. Form was not submitted.")
 
     # Navigate to the form
     page.goto(os.getenv("FORM_URL"))
