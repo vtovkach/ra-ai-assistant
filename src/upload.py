@@ -273,9 +273,7 @@ def submitForm(chat: Chat) -> bool:
         log_error(f"Error filling additional resources: {e}")
         close_connection()
         raise FormFail("Failed to input additional resources.") 
-
-
-    '''''
+    
     # Submit
     try:
         page.click('button[title="Click to submit form"]')
@@ -289,8 +287,7 @@ def submitForm(chat: Chat) -> bool:
     if page.url == os.getenv("FORM_URL"):
         close_connection()
         raise FormFail("Failed to submit form. Not all inputs fields were answered.")
-    '''''
-
+    
     close_connection()
 
     return True
