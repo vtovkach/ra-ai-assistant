@@ -208,14 +208,14 @@ def submitForm(chat: Chat) -> bool:
 
     # Navigate to the form
     page.goto(os.getenv("FORM_URL"))
-    time.sleep(1)
+    time.sleep(2)
 
     # Resident name
     try:
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
         page.keyboard.type(chat.name)
         page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=5000)
-        time.sleep(1)
+        time.sleep(2.5)
         page.click('.forms-subscriptions-search-result-row:first-child')
     except Exception as e:
         log_error(f"Error selecting resident's name: {e}")
