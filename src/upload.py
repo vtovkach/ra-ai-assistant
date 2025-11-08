@@ -17,7 +17,7 @@ context = None
 page = None
 
 def log_error(e):
-    with open("../logs/log.txt", "a", encoding="utf-8") as f:
+    with open("logs/log.txt", "a", encoding="utf-8") as f:
         f.write(f"[{datetime.datetime.now()}] {repr(e)}\n")
 
 def login() -> bool:
