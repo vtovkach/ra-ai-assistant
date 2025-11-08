@@ -262,13 +262,15 @@ def submitForm(chat: Chat) -> bool:
         log_error(f"Error filling additional resources: {e}")
         return False
 
+    '''''
     # Submit
     try:
         page.click('button[title="Click to submit form"]')
     except Exception as e:
         log_error(f"Error clicking submit button: {e}")
         return False
-
+    '''''
+    
     return True
 
 
