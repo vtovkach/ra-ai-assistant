@@ -3,3 +3,15 @@ An AI-powered automation tool that processes and submits monthly conversations b
 
 ## Motivation Behind the RA AI Assistant Tool
 As the Resident Assistant, I enjoy having monthly conversations with residents; however, entering those conversations and answering departmental questions manually is very tedious and extremely time-consuming. Therefore, I decided to develop an automation tool that performs two key tasks. First, it takes notes from my conversations and uses an AI language model to generate well-written, grammatically correct responses to specific questions in the monthly conversation form. Second, this tool automatically fills out and submits the completed form to the housing portal.
+
+## Features
+- Automatically generates responses for Residential Life form questions  
+- Automated login and form submission  
+- Session persistence for continued authentication  
+- Asynchronous task handling for multiple residents  
+
+## Technology Stack
+- **Python** — Core logic and structure  
+- **Playwright** — Browser automation  
+- **OpenAI API** — AI-powered response generation  
+- **Asyncio** — Concurrent task management
