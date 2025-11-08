@@ -6,3 +6,4 @@ config/questions
 __pycache__
 .env
 session/session.json
+.pytest_cache
