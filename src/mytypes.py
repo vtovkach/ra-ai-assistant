@@ -168,10 +168,9 @@ class Chat:
             submitForm(self)
             print(f"Chat with resident {self.name} was submitted successfully ✅")
             self.isSubmitted = True
-        except LoginFail as e:
+        except Exception as e:
             print(f"{str(e)} Failed to submit chat with resident {self.name} ❌")
-
-
+            
     def saveChat(self) -> None:
 
         '''
