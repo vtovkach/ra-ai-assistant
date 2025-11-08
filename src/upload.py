@@ -213,6 +213,7 @@ def submitForm(chat: Chat) -> bool:
         page.click('input.forms-tag-search-input[placeholder="Tag Residents"]')
         page.keyboard.type(chat.name)
         page.wait_for_selector('.forms-subscriptions-search-result-row', state='visible', timeout=5000)
+        time.sleep(1)
         page.click('.forms-subscriptions-search-result-row:first-child')
     except Exception as e:
         log_error(f"Error selecting resident's name: {e}")
