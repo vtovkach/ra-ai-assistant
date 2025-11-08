@@ -157,11 +157,15 @@ class Chat:
         """
         Submit the chat form and print the result.
         """
+        
+        if self.isSubmitted:
+            print(f"Chat with resident {self.name} is already submitted!")
 
         print(f"Submitting chat for resident: {self.name}...")
 
         if submitForm(self):
             print(f"Chat with resident {self.name} was submitted successfully ✅")
+            self.isSubmitted = True
         else:
             print(f"Failed to submit chat with resident {self.name} ❌")
         
