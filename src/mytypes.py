@@ -144,7 +144,7 @@ class Chat:
                 answer = await asyncio.to_thread(getAnswer, q, self.notes[i], self.name)
                 self.answers.append(answer)
             except Exception as e:
-                with open("log.txt", "a") as f:
+                with open("logs/log.txt", "a") as f:
                     f.write(f"[{datetime.now()}] {str(e)}\n")
                 return self, False
                 
