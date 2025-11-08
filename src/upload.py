@@ -282,12 +282,6 @@ def submitForm(chat: Chat) -> bool:
         close_connection()
         raise FormFail("Failed to submit form.")
     
-    # Wait and check if new submission page is loaded, if not raise an exception 
-    time.sleep(2)
-    if page.url == os.getenv("FORM_URL"):
-        close_connection()
-        raise FormFail("Failed to submit form. Not all inputs fields were answered.")
-    
     close_connection()
 
     return True
