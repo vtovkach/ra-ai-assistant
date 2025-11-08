@@ -162,6 +162,9 @@ class Chat:
         if self.isSubmitted:
             print(f"Chat with resident {self.name} is already submitted!")
 
+        if self.isProcessed == False:
+            print(f"Chat with resident {self.name} is not processed. Submission aborted.")
+        
         print(f"Submitting chat for resident: {self.name}...")
 
         try:
