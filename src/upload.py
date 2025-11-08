@@ -203,6 +203,7 @@ def submitForm(chat: Chat) -> bool:
     if not all([playwright, browser, context, page]):
         close_connection()
         if not login():
+            end_session()
             raise LoginFail("Logging in has failed. Form was not submitted.")
 
     # Navigate to the form
