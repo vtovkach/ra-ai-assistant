@@ -16,3 +16,5 @@ As the Resident Assistant, I enjoy having monthly conversations with residents; 
 - **Playwright** — Browser automation  
 - **OpenAI API** — AI-powered response generation  
 - **Asyncio** — Concurrent task management
+
+## How It's used
