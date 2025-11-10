@@ -56,4 +56,4 @@ Here is the list of available commands:
 
 ## Author
 Developed by **Vadym T**  
-Contact: [vadim003600@gmail.com](mailto:vadim003600@gmail.com)
+For questions or collaboration, feel free to contact me at [vadim003600@gmail.com]
