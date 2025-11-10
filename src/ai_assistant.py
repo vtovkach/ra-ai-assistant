@@ -22,6 +22,13 @@ def getClient():
 def getAnswer(question: str, userNote: str, name: str) -> str:
     client = getClient()  
 
+    # Token used to replace resident's name 
+    token = "##ResidentName##"
+
+    # Replace resident's name with token 
+    first_name = name.split()[0]
+    notes = userNote.replace(first_name, token)
+
     try:
         response = client.chat.completions.create(
             model="gpt-4.1",
@@ -32,23 +39,25 @@ def getAnswer(question: str, userNote: str, name: str) -> str:
                         f"You are asked to turn the provided notes into a clear and complete answer to the following question: {question}. "
                         "Write as a Resident Assistant reflecting on your conversations with residents. "
                         "Use simple, natural language, as if you are personally describing what you know about the resident. "
-                        "Keep your response straightforward and use simple English structures and language."
+                        "Keep your response straightforward and use simple English structures and language. "
                         "Do not use colons, dashes, en dashes, or em dashes. "
-                        f"Occasionally use the resident’s first name instead of pronouns. The resident’s name is {name.split(" ")[0]}. "
-                        "Don't invent any information about resident. Use only provided information. If it says resident could not answer question, " 
-                        "state that in the answer. Never, NEVER invent anything."
-                        "Focus mainly on what is written in the notes rather than the question itself, and use simple English language."
-                        "The whole answer should be short, no longer than 3 sentences and everything is placed in a single paragraph." 
+                        f"Occasionally use the resident’s first name instead of pronouns. The resident’s name is {token}. Use provided name as is. "
+                        "Don't invent any information about the resident. Use only provided information. "
+                        "If it says the resident could not answer a question, state that in the answer. Never, NEVER invent anything. "
+                        "Focus mainly on what is written in the notes rather than the question itself, and use simple English. "
+                        "The whole answer should be short — no longer than three sentences, written as a single paragraph."
                     )
                 },
-                {"role": "user", "content": userNote}
+                {"role": "user", "content": notes}
             ]
         )
 
         if not response.choices:
             raise OpenAIRequestError("No response choices returned from API")
 
-        return response.choices[0].message.content
+        # Replace token with real name 
+        content = response.choices[0].message.content
+        return content.replace(token, name.split()[0])
     
     except (RateLimitError, AuthenticationError, APIError) as e:
         raise OpenAIRequestError(f"API error: {e}") 
