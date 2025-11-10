@@ -18,6 +18,9 @@ As the Resident Assistant, I enjoy having monthly conversations with residents; 
 - **Asyncio** — Concurrent task management
 
 ## How It's used
+> **Note:**  
+> This tool is designed specifically for the **Texas State University Housing System** and will not function with other institutions' platforms.
+> 
 ### Step 1: Add ResLife Form Questions and set up notes directory
 First, copy all questions from the ResLife form into the `config/questions` file.  
 You can find detailed instructions [here](https://github.com/vtovkach/ra-ai-assistant/blob/main/config/readme.md).
