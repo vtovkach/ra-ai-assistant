@@ -18,6 +18,35 @@ As the Resident Assistant, I enjoy having monthly conversations with residents; 
 - **Asyncio** — Concurrent task management
 
 ## How It's used
-### Step 1: Add ResLife Form Questions
+### Step 1: Add ResLife Form Questions and set up notes directory
 First, copy all questions from the ResLife form into the `config/questions` file.  
 You can find detailed instructions [here](https://github.com/vtovkach/ra-ai-assistant/blob/main/config/readme.md).
+Next, create a `notes` directory where you will store text files containing conversation notes for each resident.
+
+### Step 2: Create .env file 
+Create a `.env` file in the project root and include the following environment variables:
+- `OPENAI_API_KEY` — your OpenAI API key  
+- `DASH_URL` — URL to the dashboard of the internal housing management website  
+- `FORM_URL` — URL to the ResLife form page 
+- `LOGIN_URL` — URL to the login page of the housing website
+  
+### Step 3: Install Dependencies
+Before launching the app, it is neccessary to install the required libraries:
+- `playwright`  
+- `openai`  
+- `dotenv`  
+- `pathlib`
+  
+### Step 4: Launch the Application
+Run the application using:
+```bash
+python src/main.py
+```
+Here is the list of available commands:
+- **status** — show current processing status  
+- **show [name]** or **show all** — display resident's info  
+- **process [name]** or **process all** — generate answers for questions 
+- **submit [name]** or **submit all** — submit responses automatically  
+- **save** — save current progress  
+- **clear** — clear generated data  
+- **exit** — close the application
