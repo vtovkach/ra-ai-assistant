@@ -18,3 +18,6 @@ As the Resident Assistant, I enjoy having monthly conversations with residents; 
 - **Asyncio** — Concurrent task management
 
 ## How It's used
+### Step 1: Add ResLife Form Questions
+First, copy all questions from the ResLife form into the `config/questions` file.  
+You can find detailed instructions [here](https://github.com/vtovkach/ra-ai-assistant/blob/main/config/readme.md).
