@@ -53,3 +53,7 @@ Here is the list of available commands:
 - **save** — save current progress  
 - **clear** — clear generated data  
 - **exit** — close the application
+
+## Author
+Developed by **Vadym T**  
+Contact: [vadim003600@gmail.com](mailto:vadim003600@gmail.com)
