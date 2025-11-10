@@ -22,7 +22,12 @@ def getClient():
 def getAnswer(question: str, userNote: str, name: str) -> str:
     client = getClient()  
 
+    # Token used to replace resident's name 
     token = "##ResidentName##"
+
+    # Replace resident's name with token 
+    first_name = name.split()[0]
+    notes = userNote.replace(first_name, token)
 
     try:
         response = client.chat.completions.create(
@@ -43,13 +48,14 @@ def getAnswer(question: str, userNote: str, name: str) -> str:
                         "The whole answer should be short — no longer than three sentences, written as a single paragraph."
                     )
                 },
-                {"role": "user", "content": userNote}
+                {"role": "user", "content": notes}
             ]
         )
 
         if not response.choices:
             raise OpenAIRequestError("No response choices returned from API")
 
+        # Replace token with real name 
         content = response.choices[0].message.content
         return content.replace(token, name.split()[0])
     
