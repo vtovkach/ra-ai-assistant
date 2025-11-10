@@ -4,7 +4,7 @@ This program requires 'questions' file to be placed inside the **config/** direc
 
 ---
 
-## 1. `questions`
+## `questions`
 - This file defines the set of questions used by the program.
 - Each question must be **separated by a line starting with an asterisk (`*`)**.
 - Each question itself should be on a **new line**.
